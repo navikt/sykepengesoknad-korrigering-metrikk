@@ -55,6 +55,9 @@ class MetrikkService(
                 endraTags.forEach {
                     registry.counter("hovedsporsmal_endra", "tag", it.first, "nytt_svar", it.second).increment()
                     log.debug("hovedsporsmal_endra: tag=${it.first} nytt_svar=${it.second}")
+                    if (it.first == "FERIE_V2") {
+                        log.info("Til manuell analyse: ${soknad.id}")
+                    }
                 }
             }
         }
