@@ -27,22 +27,4 @@ class SykepengesoknadListener(
             throw e
         }
     }
-
-    @EventListener
-    fun eventHandler(event: ConsumerStoppedEvent) {
-        if (event.reason == ConsumerStoppedEvent.Reason.NORMAL) {
-            log.debug("Consumer stoppet grunnet NORMAL")
-            return
-        }
-        log.error("Consumer stoppet grunnet ${event.reason}")
-        if (event.source is KafkaMessageListenerContainer<*, *> &&
-            event.reason == ConsumerStoppedEvent.Reason.AUTH
-        ) {
-            val container = event.source as KafkaMessageListenerContainer<*, *>
-            if (container.groupId == "sykepengesoknad-korrigering-metrikk") {
-                log.info("Trying to restart consumer, creds may be rotated")
-                container.start()
-            }
-        }
-    }
 }
