@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.springframework.boot") version "2.4.5"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
     kotlin("jvm") version "1.5.0"
     kotlin("plugin.spring") version "1.5.0"
 }
@@ -12,19 +13,8 @@ version = "1.0.0"
 description = "sykepengesoknad-korrigering-metrikk"
 java.sourceCompatibility = JavaVersion.VERSION_16
 
-buildscript {
-    repositories {
-        maven("https://plugins.gradle.org/m2/")
-    }
-    dependencies {
-        classpath("org.jlleitschuh.gradle:ktlint-gradle:10.0.0")
-    }
-}
-
 ext["nimbus-jose-jwt.version"] = "8.20" // https://nav-it.slack.com/archives/C01381BAT62/p1611056940004800
 ext["okhttp3.version"] = "4.9.0" // For at token support testen kjører (tror jeg)
-
-apply(plugin = "org.jlleitschuh.gradle.ktlint")
 
 val githubUser: String by project
 val githubPassword: String by project
