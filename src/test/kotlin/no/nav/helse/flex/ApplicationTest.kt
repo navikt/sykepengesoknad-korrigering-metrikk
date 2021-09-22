@@ -8,7 +8,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
 @SpringBootTest
 @Testcontainers
 @DirtiesContext
-class ApplicationTest : AbstractContainerBaseTest() {
+class ApplicationTest : FellesTestOppsett() {
 
     @Test
     fun contextLoads() {

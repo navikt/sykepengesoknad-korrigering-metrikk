@@ -1,26 +1,22 @@
-package no.nav.helse.flex.service
+package no.nav.helse.flex.metrikker
 
-import com.fasterxml.jackson.module.kotlin.readValue
 import io.micrometer.core.instrument.MeterRegistry
 import no.nav.helse.flex.client.SyfosoknadClient
 import no.nav.helse.flex.logger
-import no.nav.helse.flex.objectMapper
 import no.nav.syfo.kafka.felles.SoknadsstatusDTO
 import no.nav.syfo.kafka.felles.SporsmalDTO
 import no.nav.syfo.kafka.felles.SykepengesoknadDTO
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Component
 
-@Service
-class MetrikkService(
+@Component
+class KorrigerteSporsmal(
     val syfosoknadClient: SyfosoknadClient,
     val registry: MeterRegistry
 ) {
 
     val log = logger()
 
-    fun behandleSoknad(soknadString: String) {
-        val soknad = soknadString.tilSykepengesoknadDTO()
-        log.debug("Mottok soknad ${soknad.id} med status ${soknad.status}")
+    fun finnKorrigerteSporsmal(soknad: SykepengesoknadDTO) {
 
         soknad.korrigerer?.let { korrigerer ->
             if (soknad.status == SoknadsstatusDTO.SENDT) {
@@ -74,6 +70,4 @@ class MetrikkService(
         val svar: List<String>,
         val tag: String,
     )
-
-    fun String.tilSykepengesoknadDTO(): SykepengesoknadDTO = objectMapper.readValue(this)
 }
