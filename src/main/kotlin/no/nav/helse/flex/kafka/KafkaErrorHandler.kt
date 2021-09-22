@@ -18,8 +18,8 @@ class KafkaErrorHandler : SeekToCurrentErrorHandler(
 
     override fun handle(
         thrownException: Exception,
-        records: List<ConsumerRecord<*, *>>?,
-        consumer: Consumer<*, *>?,
+        records: MutableList<ConsumerRecord<*, *>>?,
+        consumer: Consumer<*, *>,
         container: MessageListenerContainer
     ) {
         log.error("Feil i listener:", thrownException)
