@@ -62,7 +62,7 @@ dependencies {
     testImplementation("org.testcontainers:kafka:$testContainersVersion")
     testImplementation("org.testcontainers:junit-jupiter:$testContainersVersion")
     testImplementation("org.awaitility:awaitility")
-    testImplementation("org.hamcrest:hamcrest-library")
+    testImplementation("org.amshove.kluent:kluent:$kluentVersion")
 }
 
 tasks.getByName<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
@@ -73,12 +73,14 @@ tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "16"
-        kotlinOptions.allWarningsAsErrors = true
+        if (System.getenv("CI") == "true") {
+            kotlinOptions.allWarningsAsErrors = true
+        }
     }
 }
 tasks.withType<Test> {
     useJUnitPlatform()
     testLogging {
-        events("PASSED", "FAILED", "SKIPPED")
+        events("STANDARD_OUT", "STARTED", "PASSED", "FAILED", "SKIPPED")
     }
 }
