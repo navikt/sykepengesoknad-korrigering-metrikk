@@ -1,11 +1,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "2.4.5"
+    id("org.springframework.boot") version "2.5.4"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
-    kotlin("jvm") version "1.5.0"
-    kotlin("plugin.spring") version "1.5.0"
+    id("org.jlleitschuh.gradle.ktlint") version "10.2.0"
+    kotlin("jvm") version "1.5.31"
+    kotlin("plugin.spring") version "1.5.31"
 }
 
 group = "no.nav.helse.flex"
@@ -13,7 +13,6 @@ version = "1.0.0"
 description = "sykepengesoknad-korrigering-metrikk"
 java.sourceCompatibility = JavaVersion.VERSION_16
 
-ext["nimbus-jose-jwt.version"] = "8.20" // https://nav-it.slack.com/archives/C01381BAT62/p1611056940004800
 ext["okhttp3.version"] = "4.9.0" // For at token support testen kjører (tror jeg)
 
 val githubUser: String by project
@@ -26,9 +25,6 @@ repositories {
     }
 
     maven {
-        url = uri("https://maven.pkg.github.com/navikt/freg-security")
-    }
-    maven {
         url = uri("https://maven.pkg.github.com/navikt/syfosm-common")
         credentials {
             username = githubUser
@@ -37,10 +33,10 @@ repositories {
     }
 }
 
-val testContainersVersion = "1.15.3"
-val tokenSupportVersion = "1.3.7"
+val testContainersVersion = "1.16.0"
+val tokenSupportVersion = "1.3.8"
 val logstashLogbackEncoderVersion = "6.6"
-val kluentVersion = "1.65"
+val kluentVersion = "1.68"
 val syfoKafkaVersion = "2021.07.20-09.39-6be2c52c"
 
 dependencies {
