@@ -9,7 +9,7 @@ import no.nav.syfo.kafka.felles.SykepengesoknadDTO
 import org.springframework.stereotype.Component
 
 @Component
-class KorrigerteSporsmal(
+class KorrigerteSoknader(
     val syfosoknadClient: SyfosoknadClient,
     val registry: MeterRegistry
 ) {
@@ -23,6 +23,10 @@ class KorrigerteSporsmal(
                 log.info("Behandler metrikk for søknad ${soknad.id} som korriger søknad $korrigerer")
 
                 val søknadSomBleKorrigert = syfosoknadClient.hentSoknad(korrigerer)
+                if (soknad.erLikOriginal(søknadSomBleKorrigert)) {
+                    log.info("Søknad ${soknad.id} er en korrigering uten endringer")
+                    registry.counter("soknad_korrigert_uten_endringer").increment()
+                }
 
                 val opprinneligeSpm = søknadSomBleKorrigert.sporsmal!!.map {
                     it.tilSpørsmål()
@@ -70,4 +74,13 @@ class KorrigerteSporsmal(
         val svar: List<String>,
         val tag: String,
     )
+}
+
+private fun SykepengesoknadDTO.erLikOriginal(søknadSomBleKorrigert: SykepengesoknadDTO): Boolean {
+    fun SporsmalDTO.tilIdlos(): SporsmalDTO = this.copy(
+        id = null,
+        undersporsmal = this.undersporsmal?.map { it.tilIdlos() }
+    )
+
+    return this.sporsmal!!.map { it.tilIdlos() } == søknadSomBleKorrigert.sporsmal!!.map { it.tilIdlos() }
 }
