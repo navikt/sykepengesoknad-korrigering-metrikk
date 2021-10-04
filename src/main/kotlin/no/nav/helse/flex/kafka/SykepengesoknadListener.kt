@@ -3,7 +3,7 @@ package no.nav.helse.flex.kafka
 import com.fasterxml.jackson.module.kotlin.readValue
 import no.nav.helse.flex.logger
 import no.nav.helse.flex.metrikker.JobbetUnderveisTimerProsent
-import no.nav.helse.flex.metrikker.KorrigerteSporsmal
+import no.nav.helse.flex.metrikker.KorrigerteSoknader
 import no.nav.helse.flex.objectMapper
 import no.nav.syfo.kafka.felles.SykepengesoknadDTO
 import org.apache.kafka.clients.consumer.ConsumerRecord
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class SykepengesoknadListener(
-    private val korrigerteSporsmal: KorrigerteSporsmal,
+    private val korrigerteSoknader: KorrigerteSoknader,
     private val jobbetUnderveisTimerProsent: JobbetUnderveisTimerProsent,
 ) {
 
@@ -26,7 +26,7 @@ class SykepengesoknadListener(
 
             log.debug("Mottok soknad ${soknad.id} med status ${soknad.status}")
 
-            korrigerteSporsmal.finnKorrigerteSporsmal(soknad)
+            korrigerteSoknader.finnKorrigerteSporsmal(soknad)
             jobbetUnderveisTimerProsent.finnForetrukketSvarJobbetUnderveis(soknad)
             acknowledgment.acknowledge()
         } catch (e: Exception) {
