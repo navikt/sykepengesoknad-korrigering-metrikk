@@ -4,6 +4,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import no.nav.helse.flex.logger
 import no.nav.helse.flex.metrikker.JobbetUnderveisTimerProsent
 import no.nav.helse.flex.metrikker.KorrigerteSoknader
+import no.nav.helse.flex.metrikker.StudierEtterBegyntSykefravaer
 import no.nav.helse.flex.objectMapper
 import no.nav.syfo.kafka.felles.SykepengesoknadDTO
 import org.apache.kafka.clients.consumer.ConsumerRecord
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component
 class SykepengesoknadListener(
     private val korrigerteSoknader: KorrigerteSoknader,
     private val jobbetUnderveisTimerProsent: JobbetUnderveisTimerProsent,
+    private val studierEtterBegyntSykefravaer: StudierEtterBegyntSykefravaer,
 ) {
 
     private val log = logger()
@@ -28,6 +30,7 @@ class SykepengesoknadListener(
 
             korrigerteSoknader.finnKorrigerteSporsmal(soknad)
             jobbetUnderveisTimerProsent.finnForetrukketSvarJobbetUnderveis(soknad)
+            studierEtterBegyntSykefravaer.finnBegyntStudierFoerSyk(soknad)
             acknowledgment.acknowledge()
         } catch (e: Exception) {
             log.error("Feil ved mottak av record med key: ${cr.key()} offset: ${cr.offset()} partition: ${cr.partition()}", e)
