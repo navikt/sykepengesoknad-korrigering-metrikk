@@ -31,8 +31,8 @@ class StudierEtterBegyntSykefravaer(
                 }
                 val startSyketilfelle = soknad.startSyketilfelle!!
                 val startUtdanning = LocalDate.parse(svarVerdi)
-                val etterSykefravaer = startSyketilfelle.isBefore(startUtdanning)
-                registry.counter("utdanning_start", "etter_sykefravaer", etterSykefravaer.toString()).increment()
+                val utdanningFoerSyketilfelle = startUtdanning.isBefore(startSyketilfelle)
+                registry.counter("utdanning_start", "utdanning_foer_syketilfelle", utdanningFoerSyketilfelle.toString()).increment()
             }
     }
 }
