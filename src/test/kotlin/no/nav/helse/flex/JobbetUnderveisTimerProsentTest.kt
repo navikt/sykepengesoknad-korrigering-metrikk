@@ -2,7 +2,7 @@ package no.nav.helse.flex
 
 import io.micrometer.core.instrument.MeterRegistry
 import no.nav.helse.flex.metrikker.JobbetUnderveisTimerProsent
-import no.nav.syfo.kafka.felles.*
+import no.nav.helse.flex.sykepengesoknad.kafka.*
 import org.amshove.kluent.`should be equal to`
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

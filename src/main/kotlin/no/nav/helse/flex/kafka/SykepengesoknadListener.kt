@@ -7,7 +7,7 @@ import no.nav.helse.flex.metrikker.KorrigerteSoknader
 import no.nav.helse.flex.metrikker.SoknadSendtForTom
 import no.nav.helse.flex.metrikker.StudierEtterBegyntSykefravaer
 import no.nav.helse.flex.objectMapper
-import no.nav.syfo.kafka.felles.SykepengesoknadDTO
+import no.nav.helse.flex.sykepengesoknad.kafka.*
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.support.Acknowledgment

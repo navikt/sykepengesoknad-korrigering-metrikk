@@ -3,9 +3,7 @@ package no.nav.helse.flex.metrikker
 import io.micrometer.core.instrument.MeterRegistry
 import no.nav.helse.flex.client.SyfosoknadClient
 import no.nav.helse.flex.logger
-import no.nav.syfo.kafka.felles.SoknadsstatusDTO
-import no.nav.syfo.kafka.felles.SporsmalDTO
-import no.nav.syfo.kafka.felles.SykepengesoknadDTO
+import no.nav.helse.flex.sykepengesoknad.kafka.*
 import org.springframework.stereotype.Component
 
 @Component
