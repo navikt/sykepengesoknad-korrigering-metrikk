@@ -1,7 +1,7 @@
 package no.nav.helse.flex.client
 
 import no.nav.helse.flex.logger
-import no.nav.syfo.kafka.felles.*
+import no.nav.helse.flex.sykepengesoknad.kafka.*
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders

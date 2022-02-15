@@ -1,17 +1,17 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "2.5.6"
+    id("org.springframework.boot") version "2.6.3"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
-    kotlin("jvm") version "1.5.31"
-    kotlin("plugin.spring") version "1.5.31"
+    kotlin("jvm") version "1.6.10"
+    kotlin("plugin.spring") version "1.6.10"
 }
 
 group = "no.nav.helse.flex"
 version = "1.0.0"
 description = "sykepengesoknad-korrigering-metrikk"
-java.sourceCompatibility = JavaVersion.VERSION_16
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 ext["okhttp3.version"] = "4.9.0" // For at token support testen kjører (tror jeg)
 
@@ -25,7 +25,7 @@ repositories {
     }
 
     maven {
-        url = uri("https://maven.pkg.github.com/navikt/syfosm-common")
+        url = uri("https://maven.pkg.github.com/navikt/sykepengesoknad-kafka")
         credentials {
             username = githubUser
             password = githubPassword
@@ -33,11 +33,11 @@ repositories {
     }
 }
 
-val testContainersVersion = "1.16.2"
-val tokenSupportVersion = "1.3.9"
-val logstashLogbackEncoderVersion = "6.6"
+val testContainersVersion = "1.16.3"
+val tokenSupportVersion = "1.3.10"
+val logstashLogbackEncoderVersion = "7.0.1"
 val kluentVersion = "1.68"
-val syfoKafkaVersion = "2021.07.20-09.39-6be2c52c"
+val sykepengesoknadKafkaVersion = "2022.02.10-16.07-0892e94a"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
@@ -51,7 +51,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-logging")
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashLogbackEncoderVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("no.nav.syfo.kafka:felles:$syfoKafkaVersion")
+    implementation("no.nav.helse.flex:sykepengesoknad-kafka:$sykepengesoknadKafkaVersion")
     implementation("org.aspectj:aspectjrt")
     implementation("org.aspectj:aspectjweaver")
     implementation("org.hibernate.validator:hibernate-validator")
@@ -72,7 +72,7 @@ tasks.getByName<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "16"
+        jvmTarget = "17"
         if (System.getenv("CI") == "true") {
             kotlinOptions.allWarningsAsErrors = true
         }
