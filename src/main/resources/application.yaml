@@ -39,10 +39,10 @@ logging.config: "classpath:logback.xml"
 no.nav.security.jwt:
   client:
     registration:
-      flex-fss-proxy-client-credentials:
+      sykepengesoknad-backend-client-credentials:
         token-endpoint-url: https://login.microsoftonline.com/${AZURE_APP_TENANT_ID}/oauth2/v2.0/token
         grant-type: client_credentials
-        scope: api://${FLEX_FSS_PROXY_AAD_CLIENT_ID}/.default
+        scope: api://${SYKEPENGESOKNAD_BACKEND_AAD_CLIENT_ID}/.default
         authentication:
           client-id: ${AZURE_APP_CLIENT_ID}
           client-secret: ${AZURE_APP_CLIENT_SECRET}

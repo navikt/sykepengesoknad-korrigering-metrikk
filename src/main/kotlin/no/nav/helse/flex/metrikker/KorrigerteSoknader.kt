@@ -1,14 +1,14 @@
 package no.nav.helse.flex.metrikker
 
 import io.micrometer.core.instrument.MeterRegistry
-import no.nav.helse.flex.client.SyfosoknadClient
+import no.nav.helse.flex.client.SykepengesoknadBackendClient
 import no.nav.helse.flex.logger
 import no.nav.helse.flex.sykepengesoknad.kafka.*
 import org.springframework.stereotype.Component
 
 @Component
 class KorrigerteSoknader(
-    val syfosoknadClient: SyfosoknadClient,
+    val sykepengesoknadBackendClient: SykepengesoknadBackendClient,
     val registry: MeterRegistry
 ) {
 
@@ -20,7 +20,7 @@ class KorrigerteSoknader(
             if (soknad.status == SoknadsstatusDTO.SENDT) {
                 log.info("Behandler metrikk for søknad ${soknad.id} som korriger søknad $korrigerer")
 
-                val søknadSomBleKorrigert = syfosoknadClient.hentSoknad(korrigerer)
+                val søknadSomBleKorrigert = sykepengesoknadBackendClient.hentSoknad(korrigerer)
                 if (soknad.erLikOriginal(søknadSomBleKorrigert)) {
                     log.info("Søknad ${soknad.id} er en korrigering uten endringer")
                     registry.counter("soknad_korrigert_uten_endringer").increment()
