@@ -2,7 +2,6 @@ package no.nav.helse.flex.client
 
 import no.nav.helse.flex.logger
 import no.nav.helse.flex.sykepengesoknad.kafka.*
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
@@ -14,21 +13,20 @@ import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
 
 @Component
-class SyfosoknadClient(
-    private val syfosoknadRestTemplate: RestTemplate,
-    @Value("\${flex.fss.proxy.url}") private val url: String
+class SykepengesoknadBackendClient(
+    private val sykepengesoknadBackendRestTemplate: RestTemplate,
 ) {
 
     val log = logger()
 
     fun hentSoknad(soknadId: String): SykepengesoknadDTO {
         try {
-            val uriBuilder = UriComponentsBuilder.fromHttpUrl("$url/syfosoknad/api/v3/soknader/$soknadId/kafkaformat")
+            val uriBuilder = UriComponentsBuilder.fromHttpUrl("http://sykepengesoknad-backend/api/v3/soknader/$soknadId/kafkaformat")
 
             val headers = HttpHeaders()
             headers.contentType = MediaType.APPLICATION_JSON
 
-            val result = syfosoknadRestTemplate
+            val result = sykepengesoknadBackendRestTemplate
                 .exchange(
                     uriBuilder.toUriString(),
                     HttpMethod.GET,
