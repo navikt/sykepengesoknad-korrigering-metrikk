@@ -24,6 +24,7 @@ class TableCreator(
 
     @PostConstruct
     fun initTestTabell() {
+        log.info("Kjører postconstruct i table creator")
         val tableName = "soknadtest"
         val schema: Schema = Schema.of(
             Field.of("soknadid", StandardSQLTypeName.STRING),
