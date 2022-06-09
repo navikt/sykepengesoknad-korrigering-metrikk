@@ -1,6 +1,7 @@
 package no.nav.helse.flex.kafka
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.google.api.client.util.DateTime
 import com.google.cloud.bigquery.BigQuery
 import com.google.cloud.bigquery.InsertAllRequest
 import com.google.cloud.bigquery.TableId
@@ -39,12 +40,19 @@ class SykepengesoknadListener(
         val row1Data: MutableMap<String, Any> = HashMap()
         row1Data["soknadid"] = soknad.id
         row1Data["status"] = soknad.status.toString()
-        row1Data["opprettet"] = Instant.now()
-        bigQuery.insertAll(
+        row1Data["opprettet"] = DateTime(Instant.now().toEpochMilli())
+        val insertAll = bigQuery.insertAll(
             InsertAllRequest.newBuilder(TableId.of(dataset, "soknadtest"))
                 .addRow(UUID.randomUUID().toString(), row1Data)
                 .build()
         )
+        if (insertAll.hasErrors()) {
+            log.error("Has errors ")
+            insertAll.insertErrors.forEach { (t, u) -> log.error("$t - $u") }
+        } else if (insertAll.hasErrors()) {
+            log.info("Has not errors ")
+        }
+
         log.debug("Mottok soknad ${soknad.id} med status ${soknad.status}")
 
         korrigerteSoknader.finnKorrigerteSporsmal(soknad)
