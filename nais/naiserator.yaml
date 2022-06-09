@@ -35,6 +35,10 @@ spec:
     requests:
       cpu: 200m
       memory: 400Mi
+  gcp:
+    bigQueryDatasets:
+      - name: korrigering_metrikk
+        permission: READWRITE
   accessPolicy:
     outbound:
       rules:
