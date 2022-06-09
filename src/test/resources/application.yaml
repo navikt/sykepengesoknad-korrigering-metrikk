@@ -6,6 +6,7 @@ KAFKA_AUTO_OFFSET_RESET: "earliest"
 SERVICEUSER_USERNAME: "user"
 SERVICEUSER_PASSWORD: "pwd"
 
+GCP_TEAM_PROJECT_ID: test
 
 spring:
   profiles:

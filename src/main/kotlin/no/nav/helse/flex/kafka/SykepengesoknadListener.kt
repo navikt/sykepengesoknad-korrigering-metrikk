@@ -12,6 +12,7 @@ import no.nav.helse.flex.metrikker.StudierEtterBegyntSykefravaer
 import no.nav.helse.flex.objectMapper
 import no.nav.helse.flex.sykepengesoknad.kafka.SykepengesoknadDTO
 import org.apache.kafka.clients.consumer.ConsumerRecord
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.support.Acknowledgment
 import org.springframework.stereotype.Component
@@ -25,10 +26,12 @@ class SykepengesoknadListener(
     private val jobbetUnderveisTimerProsent: JobbetUnderveisTimerProsent,
     private val studierEtterBegyntSykefravaer: StudierEtterBegyntSykefravaer,
     private val soknadSendtForTom: SoknadSendtForTom,
+    @Value("\${GCP_TEAM_PROJECT_ID}")
+    private val projectId: String
 ) {
 
     private val log = logger()
-    val bigquery = BigQueryOptions.getDefaultInstance().service
+    val bigquery = BigQueryOptions.newBuilder().setProjectId(projectId).build().service
 
     @KafkaListener(topics = [FLEX_SYKEPENGESOKNAD_TOPIC])
     fun listen(cr: ConsumerRecord<String, String>, acknowledgment: Acknowledgment) {
