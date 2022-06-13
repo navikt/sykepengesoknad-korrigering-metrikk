@@ -25,11 +25,14 @@ class TableCreator(
     @PostConstruct
     fun initTestTabell() {
         log.info("Kjører postconstruct i table creator")
-        val tableName = "soknadtest"
+        val tableName = "korrigeringer"
         val schema: Schema = Schema.of(
-            Field.of("soknadid", StandardSQLTypeName.STRING),
-            Field.of("status", StandardSQLTypeName.STRING),
-            Field.of("opprettet", StandardSQLTypeName.TIMESTAMP)
+            Field.of("sykepengesoknadId", StandardSQLTypeName.STRING),
+            Field.of("opprettet", StandardSQLTypeName.TIMESTAMP),
+            Field.of("korrigeringSendt", StandardSQLTypeName.TIMESTAMP),
+            Field.of("opprinneligSendt", StandardSQLTypeName.TIMESTAMP),
+            Field.of("endring", StandardSQLTypeName.STRING),
+            Field.of("tag", StandardSQLTypeName.STRING),
         )
         createTable(tableName, schema)
     }

@@ -1,14 +1,8 @@
 package no.nav.helse.flex.kafka
 
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.google.api.client.util.DateTime
-import com.google.cloud.bigquery.BigQuery
-import com.google.cloud.bigquery.InsertAllRequest
-import com.google.cloud.bigquery.TableId
-import no.nav.helse.flex.bigquery.dataset
 import no.nav.helse.flex.logger
 import no.nav.helse.flex.metrikker.JobbetUnderveisTimerProsent
-import no.nav.helse.flex.metrikker.KorrigerteSoknader
 import no.nav.helse.flex.metrikker.SoknadSendtForTom
 import no.nav.helse.flex.metrikker.StudierEtterBegyntSykefravaer
 import no.nav.helse.flex.objectMapper
@@ -17,17 +11,12 @@ import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.support.Acknowledgment
 import org.springframework.stereotype.Component
-import java.time.Instant
-import java.util.*
-import kotlin.collections.HashMap
 
 @Component
 class SykepengesoknadListener(
-    private val korrigerteSoknader: KorrigerteSoknader,
     private val jobbetUnderveisTimerProsent: JobbetUnderveisTimerProsent,
     private val studierEtterBegyntSykefravaer: StudierEtterBegyntSykefravaer,
     private val soknadSendtForTom: SoknadSendtForTom,
-    private val bigQuery: BigQuery
 ) {
 
     private val log = logger()
@@ -37,30 +26,12 @@ class SykepengesoknadListener(
 
         val soknad = cr.value().tilSykepengesoknadDTO()
 
-        val row1Data: MutableMap<String, Any> = HashMap()
-        row1Data["soknadid"] = soknad.id
-        row1Data["status"] = soknad.status.toString()
-        row1Data["opprettet"] = DateTime(Instant.now().toEpochMilli())
-        val insertAll = bigQuery.insertAll(
-            InsertAllRequest.newBuilder(TableId.of(dataset, "soknadtest"))
-                .addRow(UUID.randomUUID().toString(), row1Data)
-                .build()
-        )
-        if (insertAll.hasErrors()) {
-            log.error("Has errors ")
-            insertAll.insertErrors.forEach { (t, u) -> log.error("$t - $u") }
-        } else if (insertAll.hasErrors()) {
-            log.info("Has not errors ")
-        }
-
         log.debug("Mottok soknad ${soknad.id} med status ${soknad.status}")
 
-        korrigerteSoknader.finnKorrigerteSporsmal(soknad)
         jobbetUnderveisTimerProsent.finnForetrukketSvarJobbetUnderveis(soknad)
         studierEtterBegyntSykefravaer.finnBegyntStudierFoerSyk(soknad)
         soknadSendtForTom.finnSoknadSendtForTom(soknad)
         acknowledgment.acknowledge()
     }
-
-    fun String.tilSykepengesoknadDTO(): SykepengesoknadDTO = objectMapper.readValue(this)
 }
+fun String.tilSykepengesoknadDTO(): SykepengesoknadDTO = objectMapper.readValue(this)
