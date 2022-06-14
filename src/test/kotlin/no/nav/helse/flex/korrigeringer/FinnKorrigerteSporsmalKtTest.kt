@@ -6,6 +6,7 @@ import no.nav.helse.flex.sykepengesoknad.kafka.SoknadstypeDTO
 import no.nav.helse.flex.sykepengesoknad.kafka.SporsmalDTO
 import no.nav.helse.flex.sykepengesoknad.kafka.SvarDTO
 import no.nav.helse.flex.sykepengesoknad.kafka.SykepengesoknadDTO
+import no.nav.helse.flex.sykepengesoknad.kafka.VisningskriteriumDTO
 import org.amshove.kluent.`should be empty`
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.shouldHaveSize
@@ -64,11 +65,12 @@ class FinnKorrigerteSporsmalKtTest {
     }
 
     @Test
-    fun `test at underspm endrer seg `() {
+    fun `test at underspm endrer seg med null kriterium`() {
         val søknadSomBleKorrigert =
             soknad(
                 sporsmal = listOf(
                     SporsmalDTO(
+                        kriterieForVisningAvUndersporsmal = null,
                         tag = "FERIE",
                         svar = listOf(SvarDTO(verdi = "JA")),
                         undersporsmal = listOf(SporsmalDTO(tag = "FERIESUB", svar = listOf(SvarDTO(verdi = "1"))))
@@ -79,6 +81,73 @@ class FinnKorrigerteSporsmalKtTest {
             soknad(
                 sporsmal = listOf(
                     SporsmalDTO(
+                        kriterieForVisningAvUndersporsmal = null,
+                        tag = "FERIE",
+                        svar = listOf(SvarDTO(verdi = "JA")),
+                        undersporsmal = listOf(SporsmalDTO(tag = "FERIESUB", svar = listOf(SvarDTO(verdi = "2"))))
+                    )
+                )
+            )
+        val korrigerteSporsmal = finnKorrigerteSporsmal(
+            soknadMedKorrigering = soknadMedKorrigering,
+            søknadSomBleKorrigert = søknadSomBleKorrigert
+        )
+        korrigerteSporsmal.shouldHaveSize(1)
+        korrigerteSporsmal[0].sykepengesoknadId `should be equal to` soknadMedKorrigering.id
+        korrigerteSporsmal[0].endring `should be equal to` Endring.UNDERSPORSMAL
+        korrigerteSporsmal[0].tag `should be equal to` "FERIE"
+    }
+
+    @Test
+    fun `test at underspm ikke endrer seg ikke hvis kriteriun for undersmp er satt og ikke likt svaret`() {
+        val søknadSomBleKorrigert =
+            soknad(
+
+                sporsmal = listOf(
+                    SporsmalDTO(
+                        kriterieForVisningAvUndersporsmal = VisningskriteriumDTO.NEI,
+                        tag = "FERIE",
+                        svar = listOf(SvarDTO(verdi = "JA")),
+                        undersporsmal = listOf(SporsmalDTO(tag = "FERIESUB", svar = listOf(SvarDTO(verdi = "1"))))
+                    )
+                )
+            )
+        val soknadMedKorrigering =
+            soknad(
+                sporsmal = listOf(
+                    SporsmalDTO(
+                        kriterieForVisningAvUndersporsmal = VisningskriteriumDTO.NEI,
+                        tag = "FERIE",
+                        svar = listOf(SvarDTO(verdi = "JA")),
+                        undersporsmal = listOf(SporsmalDTO(tag = "FERIESUB", svar = listOf(SvarDTO(verdi = "2"))))
+                    )
+                )
+            )
+        val korrigerteSporsmal = finnKorrigerteSporsmal(
+            soknadMedKorrigering = soknadMedKorrigering,
+            søknadSomBleKorrigert = søknadSomBleKorrigert
+        )
+        korrigerteSporsmal.shouldHaveSize(0)
+    }
+
+    @Test
+    fun `test at underspm endrer seg med kriterium satt lik svar på overspm`() {
+        val søknadSomBleKorrigert =
+            soknad(
+                sporsmal = listOf(
+                    SporsmalDTO(
+                        kriterieForVisningAvUndersporsmal = VisningskriteriumDTO.JA,
+                        tag = "FERIE",
+                        svar = listOf(SvarDTO(verdi = "JA")),
+                        undersporsmal = listOf(SporsmalDTO(tag = "FERIESUB", svar = listOf(SvarDTO(verdi = "1"))))
+                    )
+                )
+            )
+        val soknadMedKorrigering =
+            soknad(
+                sporsmal = listOf(
+                    SporsmalDTO(
+                        kriterieForVisningAvUndersporsmal = VisningskriteriumDTO.JA,
                         tag = "FERIE",
                         svar = listOf(SvarDTO(verdi = "JA")),
                         undersporsmal = listOf(SporsmalDTO(tag = "FERIESUB", svar = listOf(SvarDTO(verdi = "2"))))
@@ -139,7 +208,7 @@ class FinnKorrigerteSporsmalKtTest {
     }
     fun soknad(
         id: String = UUID.randomUUID().toString(),
-        sporsmal: List<SporsmalDTO> = emptyList()
+        sporsmal: List<SporsmalDTO> = emptyList(),
     ): SykepengesoknadDTO {
         return SykepengesoknadDTO(
             id = id,
@@ -147,7 +216,7 @@ class FinnKorrigerteSporsmalKtTest {
             status = SoknadsstatusDTO.SENDT,
             type = SoknadstypeDTO.ARBEIDSTAKERE,
             sporsmal = sporsmal,
-            sendtArbeidsgiver = LocalDateTime.now()
+            sendtArbeidsgiver = LocalDateTime.now(),
         )
     }
 }

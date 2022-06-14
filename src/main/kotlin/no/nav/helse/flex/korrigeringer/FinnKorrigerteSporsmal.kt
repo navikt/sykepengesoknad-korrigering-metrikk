@@ -8,7 +8,10 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 
-fun finnKorrigerteSporsmal(soknadMedKorrigering: SykepengesoknadDTO, søknadSomBleKorrigert: SykepengesoknadDTO): List<KorrigertSporsmal> {
+fun finnKorrigerteSporsmal(
+    soknadMedKorrigering: SykepengesoknadDTO,
+    søknadSomBleKorrigert: SykepengesoknadDTO
+): List<KorrigertSporsmal> {
     val opprinneligeSpm = søknadSomBleKorrigert.sporsmal!!.map {
         it.tilSpørsmål()
     }.map { it.tag to it }.toMap()
@@ -40,6 +43,10 @@ fun finnKorrigerteSporsmal(soknadMedKorrigering: SykepengesoknadDTO, søknadSomB
     return endringer
 }
 
+fun SporsmalDTO.taMedUnderspm(): Boolean {
+    return kriterieForVisningAvUndersporsmal == null || kriterieForVisningAvUndersporsmal?.name == svar?.firstOrNull()?.verdi
+}
+
 fun SporsmalDTO.tilSpørsmål(): Spørsmål {
     return Spørsmål(
         tag = this.tag!!,
@@ -47,7 +54,8 @@ fun SporsmalDTO.tilSpørsmål(): Spørsmål {
             .filter { it.verdi != null }
             .map { it.verdi!! }
             .sorted(),
-        undersporsmal = this.undersporsmal?.map { it.tilSpørsmål() } ?: emptyList()
+        undersporsmal = if (taMedUnderspm())
+            this.undersporsmal?.map { it.tilSpørsmål() } ?: emptyList() else emptyList()
     )
 }
 
