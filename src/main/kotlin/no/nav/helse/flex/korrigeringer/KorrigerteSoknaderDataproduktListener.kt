@@ -17,14 +17,14 @@ class KorrigerteSoknaderDataproduktListener(
 
     @KafkaListener(
         topics = [FLEX_SYKEPENGESOKNAD_TOPIC],
-        groupId = "korrigerte-soknader-dataprodukt-listener",
+        groupId = "korrigerte-soknader-dataprodukt-listener-2",
         properties = ["auto.offset.reset = earliest"],
     )
     fun listen(cr: ConsumerRecord<String, String>, acknowledgment: Acknowledgment) {
 
         val soknad = cr.value().tilSykepengesoknadDTO()
 
-        log.info("Mottok soknad ${soknad.id} med status ${soknad.status}")
+        log.debug("Mottok soknad ${soknad.id} med status ${soknad.status}")
 
         korrigerteSoknaderDataprodukt.finnKorrigerteSporsmal(soknad)
         acknowledgment.acknowledge()

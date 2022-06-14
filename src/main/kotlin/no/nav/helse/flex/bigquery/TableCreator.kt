@@ -27,12 +27,12 @@ class TableCreator(
         log.info("Kjører postconstruct i table creator")
         val tableName = "korrigeringer"
         val schema: Schema = Schema.of(
-            Field.of("sykepengesoknadId", StandardSQLTypeName.STRING),
-            Field.of("opprettet", StandardSQLTypeName.TIMESTAMP),
-            Field.of("korrigeringSendt", StandardSQLTypeName.TIMESTAMP),
-            Field.of("opprinneligSendt", StandardSQLTypeName.TIMESTAMP),
-            Field.of("endring", StandardSQLTypeName.STRING),
-            Field.of("tag", StandardSQLTypeName.STRING),
+            Field.newBuilder("sykepengesoknadId", StandardSQLTypeName.STRING).setDescription("Id på sykepengesøknad som korrigerer").build(),
+            Field.newBuilder("opprettet", StandardSQLTypeName.TIMESTAMP).setDescription("Tidspunktet denne raden ble opprettet i bigquery").build(),
+            Field.newBuilder("korrigeringSendt", StandardSQLTypeName.TIMESTAMP).setDescription("Tidspunktet korrigeringen ble sendt").build(),
+            Field.newBuilder("opprinneligSendt", StandardSQLTypeName.TIMESTAMP).setDescription("Tidspunktet den opprinnelige søknaden ble sendt").build(),
+            Field.newBuilder("endring", StandardSQLTypeName.STRING).setDescription("Hva slags endring det er, om hovedspørsmål eller underspørsmål er endret").build(),
+            Field.newBuilder("tag", StandardSQLTypeName.STRING).setDescription("Tag på hovedspørsmålet som har endringen i seg").build(),
         )
         createTable(tableName, schema)
     }
