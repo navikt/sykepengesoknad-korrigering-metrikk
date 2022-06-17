@@ -25,14 +25,23 @@ class TableCreator(
     @PostConstruct
     fun initTestTabell() {
         log.info("Kjører postconstruct i table creator")
-        val tableName = "korrigeringer"
         val schema: Schema = Schema.of(
-            Field.newBuilder("sykepengesoknadId", StandardSQLTypeName.STRING).setDescription("Id på sykepengesøknad som korrigerer").build(),
-            Field.newBuilder("opprettet", StandardSQLTypeName.TIMESTAMP).setDescription("Tidspunktet denne raden ble opprettet i bigquery").build(),
-            Field.newBuilder("korrigeringSendt", StandardSQLTypeName.TIMESTAMP).setDescription("Tidspunktet korrigeringen ble sendt").build(),
-            Field.newBuilder("opprinneligSendt", StandardSQLTypeName.TIMESTAMP).setDescription("Tidspunktet den opprinnelige søknaden ble sendt").build(),
-            Field.newBuilder("endring", StandardSQLTypeName.STRING).setDescription("Hva slags endring det er, om hovedspørsmål eller underspørsmål er endret").build(),
-            Field.newBuilder("tag", StandardSQLTypeName.STRING).setDescription("Tag på hovedspørsmålet som har endringen i seg").build(),
+            Field.newBuilder("sykepengesoknadId", StandardSQLTypeName.STRING)
+                .setDescription("Id på sykepengesøknad som korrigerer").build(),
+            Field.newBuilder("opprettet", StandardSQLTypeName.TIMESTAMP)
+                .setDescription("Tidspunktet denne raden ble opprettet i bigquery").build(),
+            Field.newBuilder("korrigeringSendt", StandardSQLTypeName.TIMESTAMP)
+                .setDescription("Tidspunktet korrigeringen ble sendt").build(),
+            Field.newBuilder("opprinneligSendt", StandardSQLTypeName.TIMESTAMP)
+                .setDescription("Tidspunktet den opprinnelige søknaden ble sendt").build(),
+            Field.newBuilder("endring", StandardSQLTypeName.STRING)
+                .setDescription("Hva slags endring det er, om hovedspørsmål eller underspørsmål er endret").build(),
+            Field.newBuilder("tag", StandardSQLTypeName.STRING)
+                .setDescription("Tag på hovedspørsmålet som har endringen i seg").build(),
+            Field.newBuilder("fom", StandardSQLTypeName.DATE).setDescription("Søknadens fra og med dato").build(),
+            Field.newBuilder("tom", StandardSQLTypeName.DATE).setDescription("Søknadens til og med dato").build(),
+            Field.newBuilder("hovedsvar", StandardSQLTypeName.STRING)
+                .setDescription("Det siste gjeldende hovedsvaret på spørsmålet. Kun av typen Ja/NEI").build(),
         )
         createTable(tableName, schema)
     }
@@ -59,3 +68,5 @@ class TableCreator(
         }
     }
 }
+
+val tableName = "korrigerte_sporsmal"

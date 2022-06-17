@@ -7,6 +7,7 @@ import com.google.cloud.bigquery.TableId
 import no.nav.helse.flex.logger
 import org.springframework.stereotype.Component
 import java.time.Instant
+import java.time.LocalDate
 import kotlin.collections.HashMap
 
 @Component
@@ -20,7 +21,7 @@ class KorrigertSporsmalTable(val bq: BigQuery) {
         }
 
         val insertAll = bq.insertAll(
-            InsertAllRequest.newBuilder(TableId.of(dataset, "korrigeringer"))
+            InsertAllRequest.newBuilder(TableId.of(dataset, tableName))
                 .also { builder ->
                     ks.forEach {
                         builder.addRow(it.tilMap())
@@ -44,7 +45,15 @@ private fun KorrigertSporsmal.tilMap(): Map<String, Any> {
     data["opprinneligSendt"] = DateTime(opprinneligSendt.toEpochMilli())
     data["endring"] = endring.toString()
     data["tag"] = tag
-
+    hovedsvar?.let {
+        data["hovedsvar"] = it
+    }
+    fom?.let {
+        data["fom"] = it.toString()
+    }
+    tom?.let {
+        data["tom"] = it.toString()
+    }
     return data.toMap()
 }
 
@@ -54,6 +63,9 @@ data class KorrigertSporsmal(
     val opprinneligSendt: Instant,
     val endring: Endring,
     val tag: String,
+    val fom: LocalDate?,
+    val tom: LocalDate?,
+    val hovedsvar: String?
 )
 
 enum class Endring {

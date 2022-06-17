@@ -3,6 +3,7 @@ package no.nav.helse.flex.korrigeringer
 import no.nav.helse.flex.bigquery.Endring
 import no.nav.helse.flex.bigquery.KorrigertSporsmal
 import no.nav.helse.flex.sykepengesoknad.kafka.SporsmalDTO
+import no.nav.helse.flex.sykepengesoknad.kafka.SvartypeDTO
 import no.nav.helse.flex.sykepengesoknad.kafka.SykepengesoknadDTO
 import java.time.Instant
 import java.time.LocalDateTime
@@ -34,7 +35,14 @@ fun finnKorrigerteSporsmal(
                                 Endring.HOVEDSPORSMAL
                             } else
                                 Endring.UNDERSPORSMAL,
-                            tag = nyttSpm.tag
+                            tag = nyttSpm.tag,
+                            fom = soknadMedKorrigering.fom,
+                            tom = soknadMedKorrigering.tom,
+                            hovedsvar = if (nyttSpm.svartype == SvartypeDTO.JA_NEI) {
+                                nyttSpm.svar.firstOrNull()
+                            } else {
+                                null
+                            }
                         )
                     )
                 }
@@ -50,6 +58,7 @@ fun SporsmalDTO.taMedUnderspm(): Boolean {
 fun SporsmalDTO.tilSpørsmål(): Spørsmål {
     return Spørsmål(
         tag = this.tag!!,
+        svartype = this.svartype,
         svar = (this.svar ?: emptyList())
             .filter { it.verdi != null }
             .map { it.verdi!! }
@@ -62,7 +71,8 @@ fun SporsmalDTO.tilSpørsmål(): Spørsmål {
 data class Spørsmål(
     val svar: List<String>,
     val tag: String,
-    val undersporsmal: List<Spørsmål>
+    val undersporsmal: List<Spørsmål>,
+    val svartype: SvartypeDTO?
 )
 
 fun SykepengesoknadDTO.sendt(): Instant {

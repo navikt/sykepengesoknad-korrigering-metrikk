@@ -5,12 +5,14 @@ import no.nav.helse.flex.sykepengesoknad.kafka.SoknadsstatusDTO
 import no.nav.helse.flex.sykepengesoknad.kafka.SoknadstypeDTO
 import no.nav.helse.flex.sykepengesoknad.kafka.SporsmalDTO
 import no.nav.helse.flex.sykepengesoknad.kafka.SvarDTO
+import no.nav.helse.flex.sykepengesoknad.kafka.SvartypeDTO
 import no.nav.helse.flex.sykepengesoknad.kafka.SykepengesoknadDTO
 import no.nav.helse.flex.sykepengesoknad.kafka.VisningskriteriumDTO
 import org.amshove.kluent.`should be empty`
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.shouldHaveSize
 import org.junit.jupiter.api.Test
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 
@@ -51,9 +53,9 @@ class FinnKorrigerteSporsmalKtTest {
     @Test
     fun `test at hovedspm endrer seg `() {
         val søknadSomBleKorrigert =
-            soknad(sporsmal = listOf(SporsmalDTO(tag = "FERIE", svar = listOf(SvarDTO(verdi = "JA")))))
+            soknad(sporsmal = listOf(SporsmalDTO(tag = "FERIE", svartype = SvartypeDTO.JA_NEI, svar = listOf(SvarDTO(verdi = "JA")))))
         val soknadMedKorrigering =
-            soknad(sporsmal = listOf(SporsmalDTO(tag = "FERIE", svar = listOf(SvarDTO(verdi = "NEI")))))
+            soknad(sporsmal = listOf(SporsmalDTO(tag = "FERIE", svartype = SvartypeDTO.JA_NEI, svar = listOf(SvarDTO(verdi = "NEI")))))
         val korrigerteSporsmal = finnKorrigerteSporsmal(
             soknadMedKorrigering = soknadMedKorrigering,
             søknadSomBleKorrigert = søknadSomBleKorrigert
@@ -62,6 +64,9 @@ class FinnKorrigerteSporsmalKtTest {
         korrigerteSporsmal[0].sykepengesoknadId `should be equal to` soknadMedKorrigering.id
         korrigerteSporsmal[0].endring `should be equal to` Endring.HOVEDSPORSMAL
         korrigerteSporsmal[0].tag `should be equal to` "FERIE"
+        korrigerteSporsmal[0].hovedsvar `should be equal to` "NEI"
+        korrigerteSporsmal[0].fom.toString() `should be equal to` "1970-01-01"
+        korrigerteSporsmal[0].tom.toString() `should be equal to` "1970-01-04"
     }
 
     @Test
@@ -213,6 +218,8 @@ class FinnKorrigerteSporsmalKtTest {
         return SykepengesoknadDTO(
             id = id,
             fnr = "12345",
+            fom = LocalDate.EPOCH,
+            tom = LocalDate.EPOCH.plusDays(3),
             status = SoknadsstatusDTO.SENDT,
             type = SoknadstypeDTO.ARBEIDSTAKERE,
             sporsmal = sporsmal,
