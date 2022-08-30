@@ -1,0 +1,7 @@
+app: sykepengesoknad-korrigering-metrikk
+namespace: flex
+team: flex
+kafkaPool: nav-dev
+azureTenant: trygdeetaten.no
+env:
+  SYKEPENGESOKNAD_BACKEND_AAD_CLIENT_ID: dev-gcp.flex.sykepengesoknad-backend
