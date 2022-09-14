@@ -21,7 +21,7 @@ class KorrigertSporsmalTable(val bq: BigQuery) {
         }
 
         val insertAll = bq.insertAll(
-            InsertAllRequest.newBuilder(TableId.of(dataset, tableName))
+            InsertAllRequest.newBuilder(TableId.of(dataset, korrigerteSporsmalTableName))
                 .also { builder ->
                     ks.forEach {
                         builder.addRow(it.tilMap())

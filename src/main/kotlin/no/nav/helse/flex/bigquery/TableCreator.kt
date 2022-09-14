@@ -43,7 +43,7 @@ class TableCreator(
             Field.newBuilder("hovedsvar", StandardSQLTypeName.STRING)
                 .setDescription("Det siste gjeldende hovedsvaret på spørsmålet. Kun av typen Ja/NEI").build(),
         )
-        createTable(tableName, schema)
+        createTable(korrigerteSporsmalTableName, schema)
     }
 
     fun createTable(tableName: String, schema: Schema) {
@@ -69,4 +69,4 @@ class TableCreator(
     }
 }
 
-val tableName = "korrigerte_sporsmal"
+val korrigerteSporsmalTableName = "korrigerte_sporsmal"
