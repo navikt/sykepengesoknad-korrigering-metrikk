@@ -53,6 +53,8 @@ class TableCreator(
             schema = Schema.of(
                 Field.newBuilder("sykepengesoknadId", StandardSQLTypeName.STRING)
                     .setDescription("Id på sykepengesøknad").build(),
+                Field.newBuilder("soknadstype", StandardSQLTypeName.STRING)
+                    .setDescription("Sykepengesøknad type").build(),
                 Field.newBuilder("sendt", StandardSQLTypeName.TIMESTAMP)
                     .setDescription("Tidspunktet sykepengesøknaden ble sendt første gang").build(),
                 Field.newBuilder("korriggerer", StandardSQLTypeName.STRING)

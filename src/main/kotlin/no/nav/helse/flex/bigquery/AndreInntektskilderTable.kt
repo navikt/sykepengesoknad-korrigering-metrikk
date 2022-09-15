@@ -37,6 +37,7 @@ private fun AndreInntektskilder.tilMap(): Map<String, Any> {
     val data: MutableMap<String, Any> = hashMapOf()
 
     data["sykepengesoknadId"] = sykepengesoknadId
+    data["soknadstype"] = soknadstype
     data["sendt"] = DateTime(sendt.toEpochMilli())
     korriggerer?.let { data["korriggerer"] = it }
 
@@ -56,6 +57,7 @@ private fun AndreInntektskilder.tilMap(): Map<String, Any> {
 
 data class AndreInntektskilder(
     val sykepengesoknadId: String,
+    val soknadstype: String,
     val sendt: Instant,
     val korriggerer: String?,
 

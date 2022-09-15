@@ -18,6 +18,7 @@ fun finnAndreInntektskilderSporsmal(
 
     return AndreInntektskilder(
         sykepengesoknadId = soknad.id,
+        soknadstype = soknad.type.toString().lowercase(),
         korriggerer = soknad.korrigerer,
         sendt = soknad.sendt(),
         andreArbeidsforholdSykmeldt = andreInntektskilder.erSykmeldtFra(ANDRE_ARBEIDSFORHOLD),
