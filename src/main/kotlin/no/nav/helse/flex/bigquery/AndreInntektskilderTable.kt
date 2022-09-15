@@ -39,7 +39,7 @@ private fun AndreInntektskilder.tilMap(): Map<String, Any> {
     val data: MutableMap<String, Any> = hashMapOf()
 
     data["sykepengesoknadId"] = sykepengesoknadId
-    data["opprettet"] = DateTime(Instant.now().toEpochMilli())
+    data["sendt"] = DateTime(sendt.toEpochMilli())
     korriggerer?.let { data["korriggerer"] = it }
 
     data["andreArbeidsforhold"] = andreArbeidsforhold
@@ -64,11 +64,14 @@ private fun AndreInntektskilder.tilMap(): Map<String, Any> {
 
 data class AndreInntektskilder(
     val sykepengesoknadId: String,
-    val opprettet: Instant,
-    val korriggerer: String? = null,
+    val sendt: Instant,
+    val korriggerer: String?,
 
     val andreArbeidsforhold: Boolean,
     val andreArbeidsforholdSykmeldt: Boolean? = null,
+
+    val arbeidsforhold: Boolean,
+    val arbeidsforholdSykmeldt: Boolean? = null,
 
     val selvstendigNaeringsdrivende: Boolean,
     val selvstendigNaeringsdrivendeSykmeldt: Boolean? = null,
@@ -81,6 +84,15 @@ data class AndreInntektskilder(
 
     val frilanser: Boolean,
     val frilanserSykmeldt: Boolean? = null,
+
+    val frilanserSelvstendig: Boolean,
+    val frilanserSelvstendigSykmeldt: Boolean? = null,
+
+    val fosterhjemgodtgjorelse: Boolean,
+    val fosterhjemgodtgjorelseSykmeldt: Boolean? = null,
+
+    val omsorgslonn: Boolean,
+    val omsorgslonnSykmeldt: Boolean? = null,
 
     val annet: Boolean,
 )
