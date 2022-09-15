@@ -42,22 +42,16 @@ private fun AndreInntektskilder.tilMap(): Map<String, Any> {
     data["sendt"] = DateTime(sendt.toEpochMilli())
     korriggerer?.let { data["korriggerer"] = it }
 
-    data["andreArbeidsforhold"] = andreArbeidsforhold
     andreArbeidsforholdSykmeldt?.let { data["andreArbeidsforholdSykmeldt"] = andreArbeidsforholdSykmeldt }
-
-    data["selvstendigNaeringsdrivende"] = selvstendigNaeringsdrivende
+    arbeidsforholdSykmeldt?.let { data["arbeidsforholdSykmeldt"] = arbeidsforholdSykmeldt }
     selvstendigNaeringsdrivendeSykmeldt?.let { data["selvstendigNaeringsdrivendeSykmeldt"] = selvstendigNaeringsdrivendeSykmeldt }
-
-    data["dagmamma"] = dagmamma
     dagmammaSykmeldt?.let { data["dagmammaSykmeldt"] = dagmammaSykmeldt }
-
-    data["jordbrukFiskeReindrift"] = jordbrukFiskeReindrift
     jordbrukFiskeReindriftSykmeldt?.let { data["jordbrukFiskeReindriftSykmeldt"] = jordbrukFiskeReindriftSykmeldt }
-
-    data["frilanser"] = frilanser
     frilanserSykmeldt?.let { data["frilanserSykmeldt"] = frilanserSykmeldt }
-
-    data["annet"] = annet
+    frilanserSelvstendigSykmeldt?.let { data["frilanserSelvstendigSykmeldt"] = frilanserSelvstendigSykmeldt }
+    fosterhjemgodtgjorelseSykmeldt?.let { data["fosterhjemgodtgjorelseSykmeldt"] = fosterhjemgodtgjorelseSykmeldt }
+    omsorgslonnSykmeldt?.let { data["omsorgslonnSykmeldt"] = omsorgslonnSykmeldt }
+    annet?.let { data["annet"] = annet }
 
     return data.toMap()
 }
@@ -67,32 +61,14 @@ data class AndreInntektskilder(
     val sendt: Instant,
     val korriggerer: String?,
 
-    val andreArbeidsforhold: Boolean,
-    val andreArbeidsforholdSykmeldt: Boolean? = null,
-
-    val arbeidsforhold: Boolean,
-    val arbeidsforholdSykmeldt: Boolean? = null,
-
-    val selvstendigNaeringsdrivende: Boolean,
-    val selvstendigNaeringsdrivendeSykmeldt: Boolean? = null,
-
-    val dagmamma: Boolean,
-    val dagmammaSykmeldt: Boolean? = null,
-
-    val jordbrukFiskeReindrift: Boolean,
-    val jordbrukFiskeReindriftSykmeldt: Boolean? = null,
-
-    val frilanser: Boolean,
-    val frilanserSykmeldt: Boolean? = null,
-
-    val frilanserSelvstendig: Boolean,
-    val frilanserSelvstendigSykmeldt: Boolean? = null,
-
-    val fosterhjemgodtgjorelse: Boolean,
-    val fosterhjemgodtgjorelseSykmeldt: Boolean? = null,
-
-    val omsorgslonn: Boolean,
-    val omsorgslonnSykmeldt: Boolean? = null,
-
-    val annet: Boolean,
+    val andreArbeidsforholdSykmeldt: Boolean?,
+    val arbeidsforholdSykmeldt: Boolean?,
+    val selvstendigNaeringsdrivendeSykmeldt: Boolean?,
+    val dagmammaSykmeldt: Boolean?,
+    val jordbrukFiskeReindriftSykmeldt: Boolean?,
+    val frilanserSykmeldt: Boolean?,
+    val frilanserSelvstendigSykmeldt: Boolean?,
+    val fosterhjemgodtgjorelseSykmeldt: Boolean?,
+    val omsorgslonnSykmeldt: Boolean?,
+    val annet: Boolean?,
 )

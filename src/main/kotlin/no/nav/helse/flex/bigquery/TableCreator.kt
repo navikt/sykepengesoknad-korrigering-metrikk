@@ -53,35 +53,37 @@ class TableCreator(
             schema = Schema.of(
                 Field.newBuilder("sykepengesoknadId", StandardSQLTypeName.STRING)
                     .setDescription("Id på sykepengesøknad").build(),
-                Field.newBuilder("opprettet", StandardSQLTypeName.TIMESTAMP)
-                    .setDescription("Tidspunktet denne raden ble opprettet i bigquery").build(),
+                Field.newBuilder("sendt", StandardSQLTypeName.TIMESTAMP)
+                    .setDescription("Tidspunktet sykepengesøknaden ble sendt første gang").build(),
                 Field.newBuilder("korriggerer", StandardSQLTypeName.STRING)
                     .setDescription("Id på sykepengesøknad som blir korrigert").build(),
 
-                Field.newBuilder("andreArbeidsforhold", StandardSQLTypeName.BOOL)
-                    .setDescription("Huket av for andre arbeidsforhold").build(),
                 Field.newBuilder("andreArbeidsforholdSykmeldt", StandardSQLTypeName.BOOL)
                     .setDescription("Er du sykmeldt fra andre arbeidsforhold?").build(),
 
-                Field.newBuilder("selvstendigNaeringsdrivende", StandardSQLTypeName.BOOL)
-                    .setDescription("Huket av for selvstendig næringsdrivende").build(),
+                Field.newBuilder("arbeidsforholdSykmeldt", StandardSQLTypeName.BOOL)
+                    .setDescription("Er du sykmeldt fra andre arbeidsforhold?").build(),
+
                 Field.newBuilder("selvstendigNaeringsdrivendeSykmeldt", StandardSQLTypeName.BOOL)
                     .setDescription("Er du sykmeldt fra selvstendig næringsdrivende?").build(),
 
-                Field.newBuilder("dagmamma", StandardSQLTypeName.BOOL)
-                    .setDescription("Huket av for dagmamma").build(),
                 Field.newBuilder("dagmammaSykmeldt", StandardSQLTypeName.BOOL)
                     .setDescription("Er du sykmeldt fra dagmamma?").build(),
 
-                Field.newBuilder("jordbrukFiskeReindrift", StandardSQLTypeName.BOOL)
-                    .setDescription("Huket av for jordbruk / fiske / reindrift").build(),
                 Field.newBuilder("jordbrukFiskeReindriftSykmeldt", StandardSQLTypeName.BOOL)
                     .setDescription("Er du sykmeldt fra jordbruk / fiske / reindrift?").build(),
 
-                Field.newBuilder("frilanser", StandardSQLTypeName.BOOL)
-                    .setDescription("Huket av for frilanser").build(),
                 Field.newBuilder("frilanserSykmeldt", StandardSQLTypeName.BOOL)
                     .setDescription("Er du sykmeldt fra frilanser?").build(),
+
+                Field.newBuilder("frilanserSelvstendigSykmeldt", StandardSQLTypeName.BOOL)
+                    .setDescription("Er du sykmeldt fra frilanser eller selvstendig næringsdrivende?").build(),
+
+                Field.newBuilder("fosterhjemgodtgjorelseSykmeldt", StandardSQLTypeName.BOOL)
+                    .setDescription("Er du sykmeldt med fosterhjemsgodtgjørelse?").build(),
+
+                Field.newBuilder("omsorgslonnSykmeldt", StandardSQLTypeName.BOOL)
+                    .setDescription("Er du sykmeldt med omsorgslønn fra kommunen?").build(),
 
                 Field.newBuilder("annet", StandardSQLTypeName.BOOL)
                     .setDescription("Huket av for annet").build(),
