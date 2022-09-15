@@ -10,12 +10,10 @@ import no.nav.helse.flex.sykepengesoknad.kafka.SykepengesoknadDTO
 fun finnAndreInntektskilderSporsmal(
     soknad: SykepengesoknadDTO,
 ): AndreInntektskilder {
-    val andreInntektskilder = soknad.andreInntektskilder ?: emptyList()
+    val andreInntektskilder = soknad.andreInntektskilder
 
-    if (andreInntektskilder.isEmpty()) {
-        require(soknad.sporsmal!!.first { it.tag == "ANDRE_INNTEKTSKILDER" }.svar!![0].verdi == "NEI") {
-            "SykepengesoknadDTO.andreInntektskilder == null og ANDRE_INNTEKTSKILDER er ikke NEI, skal ikke skje"
-        }
+    require(andreInntektskilder != null) {
+        "Soknad ${soknad.id} ${soknad.type} mangler spørsmål om andre inntektskilder"
     }
 
     return AndreInntektskilder(
