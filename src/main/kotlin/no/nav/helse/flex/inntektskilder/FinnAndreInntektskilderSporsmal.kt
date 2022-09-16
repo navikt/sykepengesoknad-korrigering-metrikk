@@ -10,30 +10,43 @@ import no.nav.helse.flex.sykepengesoknad.kafka.SykepengesoknadDTO
 fun finnAndreInntektskilderSporsmal(
     soknad: SykepengesoknadDTO,
 ): AndreInntektskilder {
-    val andreInntektskilder = soknad.andreInntektskilder
-
-    require(andreInntektskilder != null) {
-        "Soknad ${soknad.id} ${soknad.type} mangler spørsmål om andre inntektskilder"
-    }
-
-    return AndreInntektskilder(
+    val inntektskilderDTO = soknad.andreInntektskilder
+    val andreInntektskilder = AndreInntektskilder(
         sykepengesoknadId = soknad.id,
         soknadstype = soknad.type.toString().lowercase(),
         korriggerer = soknad.korrigerer,
         sendt = soknad.sendt(),
-        andreArbeidsforholdSykmeldt = andreInntektskilder.erSykmeldtFra(ANDRE_ARBEIDSFORHOLD),
-        arbeidsforholdSykmeldt = andreInntektskilder.erSykmeldtFra(ARBEIDSFORHOLD),
-        selvstendigNaeringsdrivendeSykmeldt = andreInntektskilder.erSykmeldtFra(SELVSTENDIG_NARINGSDRIVENDE),
-        dagmammaSykmeldt = andreInntektskilder.erSykmeldtFra(SELVSTENDIG_NARINGSDRIVENDE_DAGMAMMA),
-        jordbrukFiskeReindriftSykmeldt = andreInntektskilder.erSykmeldtFra(JORDBRUKER_FISKER_REINDRIFTSUTOVER),
-        frilanserSykmeldt = andreInntektskilder.erSykmeldtFra(FRILANSER),
-        frilanserSelvstendigSykmeldt = andreInntektskilder.erSykmeldtFra(FRILANSER_SELVSTENDIG),
-        fosterhjemgodtgjorelseSykmeldt = andreInntektskilder.erSykmeldtFra(FOSTERHJEMGODTGJORELSE),
-        omsorgslonnSykmeldt = andreInntektskilder.erSykmeldtFra(OMSORGSLONN),
-        annet = andreInntektskilder.erSykmeldtFra(ANNET),
+    )
+
+    if (inntektskilderDTO == null) {
+        require(soknad.sporsmalOmAndreInntektskilder() != null) {
+            "Soknad ${soknad.id} ${soknad.type} mangler spørsmål om andre inntektskilder, skal ikke skje"
+        }
+
+        require(soknad.svarPaAndreInntektskilder() == "NEI") {
+            "Soknad ${soknad.id} ${soknad.type} har ikke svart NEI på andre inntektskilder, og må hentes ut manuelt"
+        }
+
+        return andreInntektskilder // Har svart NEI
+    }
+
+    return andreInntektskilder.copy(
+        andreArbeidsforholdSykmeldt = inntektskilderDTO.erSykmeldtFra(ANDRE_ARBEIDSFORHOLD),
+        arbeidsforholdSykmeldt = inntektskilderDTO.erSykmeldtFra(ARBEIDSFORHOLD),
+        selvstendigNaeringsdrivendeSykmeldt = inntektskilderDTO.erSykmeldtFra(SELVSTENDIG_NARINGSDRIVENDE),
+        dagmammaSykmeldt = inntektskilderDTO.erSykmeldtFra(SELVSTENDIG_NARINGSDRIVENDE_DAGMAMMA),
+        jordbrukFiskeReindriftSykmeldt = inntektskilderDTO.erSykmeldtFra(JORDBRUKER_FISKER_REINDRIFTSUTOVER),
+        frilanserSykmeldt = inntektskilderDTO.erSykmeldtFra(FRILANSER),
+        frilanserSelvstendigSykmeldt = inntektskilderDTO.erSykmeldtFra(FRILANSER_SELVSTENDIG),
+        fosterhjemgodtgjorelseSykmeldt = inntektskilderDTO.erSykmeldtFra(FOSTERHJEMGODTGJORELSE),
+        omsorgslonnSykmeldt = inntektskilderDTO.erSykmeldtFra(OMSORGSLONN),
+        annet = inntektskilderDTO.erSykmeldtFra(ANNET),
     )
 }
 
 private fun List<InntektskildeDTO>.erSykmeldtFra(inntektskilde: InntektskildetypeDTO): Boolean? {
     return find { it.type == inntektskilde }?.sykmeldt
 }
+
+private fun SykepengesoknadDTO.sporsmalOmAndreInntektskilder() = sporsmal?.find { it.tag == "ANDRE_INNTEKTSKILDER" }
+private fun SykepengesoknadDTO.svarPaAndreInntektskilder() = sporsmalOmAndreInntektskilder()?.svar?.get(0)?.verdi
