@@ -17,6 +17,7 @@ class KorrigerteSoknaderDataproduktListener(
 
     @KafkaListener(
         topics = [FLEX_SYKEPENGESOKNAD_TOPIC],
+        id = "korrigerte-soknader-dataprodukt-listener",
         groupId = "korrigerte-soknader-dataprodukt-listener-4",
         properties = ["auto.offset.reset = earliest"],
     )

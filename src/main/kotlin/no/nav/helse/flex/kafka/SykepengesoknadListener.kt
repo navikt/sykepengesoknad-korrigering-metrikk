@@ -21,7 +21,11 @@ class SykepengesoknadListener(
 
     private val log = logger()
 
-    @KafkaListener(topics = [FLEX_SYKEPENGESOKNAD_TOPIC])
+    @KafkaListener(
+        topics = [FLEX_SYKEPENGESOKNAD_TOPIC],
+        id = "prometheus-metrikker-listener",
+        idIsGroup = false,
+    )
     fun listen(cr: ConsumerRecord<String, String>, acknowledgment: Acknowledgment) {
 
         val soknad = cr.value().tilSykepengesoknadDTO()
