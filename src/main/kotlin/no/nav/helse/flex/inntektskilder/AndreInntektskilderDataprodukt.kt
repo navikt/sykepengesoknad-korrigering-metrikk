@@ -25,6 +25,12 @@ class AndreInntektskilderDataprodukt(
 
     fun andreInntektskilder(soknad: SykepengesoknadDTO) {
         if (soknad.status == SoknadsstatusDTO.SENDT && soknad.type in soknaderMedAndreInntektskilder) {
+
+            if (soknad.sporsmal!!.all { it.svar!!.isEmpty() }) {
+                log.warn("Soknad ${soknad.id} inneholder ingen svar, veldig rart")
+                return
+            }
+
             andreInntektskilderTable.lagreAndreInntektskilderSporsmal(
                 finnAndreInntektskilderSporsmal(soknad)
             )
