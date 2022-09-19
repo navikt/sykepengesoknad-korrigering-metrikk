@@ -7,8 +7,8 @@ import no.nav.helse.flex.sykepengesoknad.kafka.SykepengesoknadDTO
 import java.util.*
 
 fun hentInntektListe(soknad: SykepengesoknadDTO): List<InntektskildeDTO> {
-    val andreinntektsporsmal = soknad.getSporsmalMedTagOrNull("ANDRE_INNTEKTSKILDER")
-    return if ("JA" == andreinntektsporsmal?.forsteSvar())
+    val andreinntektsporsmal = soknad.getSporsmalMedTag("ANDRE_INNTEKTSKILDER")
+    return if ("JA" == andreinntektsporsmal.forsteSvar())
         andreinntektsporsmal.undersporsmal!![0].undersporsmal!!
             .filter { it.svar!!.isNotEmpty() }
             .map {
@@ -24,8 +24,8 @@ fun hentInntektListe(soknad: SykepengesoknadDTO): List<InntektskildeDTO> {
         Collections.emptyList()
 }
 
-private fun SykepengesoknadDTO.getSporsmalMedTagOrNull(tag: String): SporsmalDTO? {
-    return sporsmal!!.flatten().firstOrNull { s -> s.tag == tag }
+private fun SykepengesoknadDTO.getSporsmalMedTag(tag: String): SporsmalDTO {
+    return sporsmal!!.flatten().first { s -> s.tag == tag }
 }
 
 private fun List<SporsmalDTO>.flatten(): List<SporsmalDTO> =
