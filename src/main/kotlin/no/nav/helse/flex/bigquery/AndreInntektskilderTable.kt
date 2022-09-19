@@ -13,11 +13,7 @@ class AndreInntektskilderTable(val bq: BigQuery) {
 
     val log = logger()
 
-    fun lagreAndreInntektskilderSporsmal(ai: AndreInntektskilder?) {
-        if (ai == null) {
-            return
-        }
-
+    fun lagreAndreInntektskilderSporsmal(ai: AndreInntektskilder) {
         val insertAll = bq.insertAll(
             InsertAllRequest.newBuilder(TableId.of(dataset, andreInntektskilderTableName))
                 .also { builder ->
