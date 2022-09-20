@@ -8,6 +8,11 @@ import no.nav.helse.flex.sykepengesoknad.kafka.InntektskildetypeDTO.*
 import no.nav.helse.flex.sykepengesoknad.kafka.SoknadstypeDTO
 import no.nav.helse.flex.sykepengesoknad.kafka.SykepengesoknadDTO
 
+private val gamleSoknaderUtenSpm = listOf(
+    SoknadstypeDTO.ANNET_ARBEIDSFORHOLD,
+    SoknadstypeDTO.ARBEIDSLEDIG,
+)
+
 fun finnAndreInntektskilderSporsmal(
     soknad: SykepengesoknadDTO,
 ): AndreInntektskilder {
@@ -19,7 +24,7 @@ fun finnAndreInntektskilderSporsmal(
         sendt = soknad.sendt(),
     )
 
-    if (soknad.sporsmalOmAndreInntektskilder() == null && soknad.type == SoknadstypeDTO.ANNET_ARBEIDSFORHOLD) {
+    if (soknad.sporsmalOmAndreInntektskilder() == null && soknad.type in gamleSoknaderUtenSpm) {
         return andreInntektskilder
     }
 
