@@ -26,8 +26,10 @@ class AndreInntektskilderDataproduktListener(
 
         val soknad = cr.value().tilSykepengesoknadDTO()
 
-        andreInntektskilderDataprodukt.andreInntektskilder(soknad)
+        val behandlet = andreInntektskilderDataprodukt.andreInntektskilder(soknad)
 
-        acknowledgment.acknowledge()
+        if (behandlet) {
+            acknowledgment.acknowledge()
+        }
     }
 }

@@ -23,17 +23,21 @@ class AndreInntektskilderDataprodukt(
         SoknadstypeDTO.GRADERT_REISETILSKUDD,
     )
 
-    fun andreInntektskilder(soknad: SykepengesoknadDTO) {
+    fun andreInntektskilder(soknad: SykepengesoknadDTO): Boolean {
         if (soknad.status == SoknadsstatusDTO.SENDT && soknad.type in soknaderMedAndreInntektskilder) {
 
             if (soknad.sporsmal!!.all { it.svar!!.isEmpty() }) {
                 log.warn("Soknad ${soknad.id} inneholder ingen svar, veldig rart")
-                return
+                return false
             }
 
             andreInntektskilderTable.lagreAndreInntektskilderSporsmal(
                 finnAndreInntektskilderSporsmal(soknad)
             )
+
+            return true
         }
+
+        return false
     }
 }
