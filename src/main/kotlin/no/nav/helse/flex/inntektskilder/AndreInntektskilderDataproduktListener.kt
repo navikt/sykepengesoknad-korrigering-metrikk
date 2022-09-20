@@ -19,6 +19,7 @@ class AndreInntektskilderDataproduktListener(
         topics = [FLEX_SYKEPENGESOKNAD_TOPIC],
         id = "andre-inntektskilder-dataprodukt-listener",
         idIsGroup = true,
+        concurrency = "3",
         properties = ["auto.offset.reset = earliest"],
     )
     fun listen(cr: ConsumerRecord<String, String>, acknowledgment: Acknowledgment) {
