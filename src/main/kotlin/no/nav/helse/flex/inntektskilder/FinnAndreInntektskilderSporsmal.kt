@@ -5,6 +5,7 @@ import no.nav.helse.flex.korrigeringer.sendt
 import no.nav.helse.flex.sykepengesoknad.kafka.InntektskildeDTO
 import no.nav.helse.flex.sykepengesoknad.kafka.InntektskildetypeDTO
 import no.nav.helse.flex.sykepengesoknad.kafka.InntektskildetypeDTO.*
+import no.nav.helse.flex.sykepengesoknad.kafka.SoknadstypeDTO
 import no.nav.helse.flex.sykepengesoknad.kafka.SykepengesoknadDTO
 
 fun finnAndreInntektskilderSporsmal(
@@ -17,6 +18,10 @@ fun finnAndreInntektskilderSporsmal(
         korriggerer = soknad.korrigerer,
         sendt = soknad.sendt(),
     )
+
+    if (soknad.sporsmalOmAndreInntektskilder() == null && soknad.type == SoknadstypeDTO.ANNET_ARBEIDSFORHOLD) {
+        return andreInntektskilder
+    }
 
     require(soknad.sporsmalOmAndreInntektskilder() != null) {
         "Soknad ${soknad.id} ${soknad.type} mangler spørsmål om andre inntektskilder, skal ikke skje"
