@@ -62,5 +62,5 @@ private fun List<InntektskildeDTO>.harInntektskilde(inntektskilde: Inntektskilde
     return any { it.type == inntektskilde }
 }
 
-private fun SykepengesoknadDTO.sporsmalOmAndreInntektskilder() = sporsmal?.find { it.tag == "ANDRE_INNTEKTSKILDER" }
-private fun SykepengesoknadDTO.svarPaAndreInntektskilder() = sporsmalOmAndreInntektskilder()?.svar?.get(0)?.verdi
+fun SykepengesoknadDTO.sporsmalOmAndreInntektskilder() = sporsmal?.find { it.tag == "ANDRE_INNTEKTSKILDER" }
+fun SykepengesoknadDTO.svarPaAndreInntektskilder() = sporsmalOmAndreInntektskilder()?.svar?.getOrNull(0)?.verdi

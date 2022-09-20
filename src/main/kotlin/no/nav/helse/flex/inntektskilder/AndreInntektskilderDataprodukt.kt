@@ -31,6 +31,11 @@ class AndreInntektskilderDataprodukt(
                 return false
             }
 
+            if (soknad.sporsmalOmAndreInntektskilder() != null && soknad.svarPaAndreInntektskilder() == null) {
+                log.warn("Soknad ${soknad.id} inneholder ingen svar på andre inntektskilder spørsmålet, veldig rart")
+                return false
+            }
+
             andreInntektskilderTable.lagreAndreInntektskilderSporsmal(
                 finnAndreInntektskilderSporsmal(soknad)
             )
