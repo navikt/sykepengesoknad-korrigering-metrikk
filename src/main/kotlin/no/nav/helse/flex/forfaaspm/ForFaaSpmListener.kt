@@ -18,7 +18,7 @@ class ForFaaSpmListener(
 
     @KafkaListener(
         topics = [FLEX_SYKEPENGESOKNAD_TOPIC],
-        id = "for-faa-spm-listener-2",
+        id = "for-faa-spm-listener-3",
         idIsGroup = true,
         concurrency = "3",
         properties = ["auto.offset.reset = earliest"],
@@ -27,7 +27,7 @@ class ForFaaSpmListener(
 
         val soknad = cr.value().tilSykepengesoknadDTO()
 
-        val behandlet = forFaaSpm.forFaaSpm(soknad)
+        val behandlet = forFaaSpm.forFaaSpm(soknad, cr.timestamp())
 
         if (behandlet) {
             acknowledgment.acknowledge()
