@@ -49,46 +49,15 @@ class TableCreator(
         )
 
         createTable(
-            tableName = andreInntektskilderTableName,
+            tableName = vanligArbeidstidTableName,
             schema = Schema.of(
-                Field.newBuilder("sykepengesoknadId", StandardSQLTypeName.STRING)
-                    .setDescription("Id på sykepengesøknad").build(),
-                Field.newBuilder("soknadstype", StandardSQLTypeName.STRING)
-                    .setDescription("Sykepengesøknad type").build(),
-                Field.newBuilder("sendt", StandardSQLTypeName.TIMESTAMP)
-                    .setDescription("Tidspunktet sykepengesøknaden ble sendt første gang").build(),
-                Field.newBuilder("korriggerer", StandardSQLTypeName.STRING)
-                    .setDescription("Id på sykepengesøknad som blir korrigert").build(),
-
-                Field.newBuilder("andreArbeidsforholdSykmeldt", StandardSQLTypeName.BOOL)
-                    .setDescription("Er du sykmeldt fra andre arbeidsforhold?").build(),
-
-                Field.newBuilder("arbeidsforholdSykmeldt", StandardSQLTypeName.BOOL)
-                    .setDescription("Er du sykmeldt fra andre arbeidsforhold?").build(),
-
-                Field.newBuilder("selvstendigNaeringsdrivendeSykmeldt", StandardSQLTypeName.BOOL)
-                    .setDescription("Er du sykmeldt fra selvstendig næringsdrivende?").build(),
-
-                Field.newBuilder("dagmammaSykmeldt", StandardSQLTypeName.BOOL)
-                    .setDescription("Er du sykmeldt fra dagmamma?").build(),
-
-                Field.newBuilder("jordbrukFiskeReindriftSykmeldt", StandardSQLTypeName.BOOL)
-                    .setDescription("Er du sykmeldt fra jordbruk / fiske / reindrift?").build(),
-
-                Field.newBuilder("frilanserSykmeldt", StandardSQLTypeName.BOOL)
-                    .setDescription("Er du sykmeldt fra frilanser?").build(),
-
-                Field.newBuilder("frilanserSelvstendigSykmeldt", StandardSQLTypeName.BOOL)
-                    .setDescription("Er du sykmeldt fra frilanser eller selvstendig næringsdrivende?").build(),
-
-                Field.newBuilder("fosterhjemgodtgjorelseSykmeldt", StandardSQLTypeName.BOOL)
-                    .setDescription("Er du sykmeldt med fosterhjemsgodtgjørelse?").build(),
-
-                Field.newBuilder("omsorgslonnSykmeldt", StandardSQLTypeName.BOOL)
-                    .setDescription("Er du sykmeldt med omsorgslønn fra kommunen?").build(),
-
-                Field.newBuilder("annet", StandardSQLTypeName.BOOL)
-                    .setDescription("Huket av for annet").build(),
+                Field.newBuilder("sykepengesoknadId", StandardSQLTypeName.STRING).setDescription("Id ").build(),
+                Field.newBuilder("fom", StandardSQLTypeName.DATE).setDescription("Søknadens fra og med dato").build(),
+                Field.newBuilder("tom", StandardSQLTypeName.DATE).setDescription("Søknadens til og med dato").build(),
+                Field.newBuilder("fnr", StandardSQLTypeName.STRING).setDescription("Søknadens fnr").build(),
+                Field.newBuilder("orgnr", StandardSQLTypeName.STRING).setDescription("Orgnr").build(),
+                Field.newBuilder("orgnavn", StandardSQLTypeName.STRING).setDescription("Orgnr").build(),
+                Field.newBuilder("arbeidstid", StandardSQLTypeName.STRING).setDescription("Vanlig arbeidstid").build(),
             )
         )
     }
@@ -117,4 +86,4 @@ class TableCreator(
 }
 
 const val korrigerteSporsmalTableName = "korrigerte_sporsmal"
-const val andreInntektskilderTableName = "andre_inntektskilder"
+const val vanligArbeidstidTableName = "vanlig_arbeidstid"
