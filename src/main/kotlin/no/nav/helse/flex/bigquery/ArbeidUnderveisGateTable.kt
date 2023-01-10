@@ -55,6 +55,6 @@ private fun ArbeidUnderveisRad.tilMap(): Map<String, Any?> {
     data["gammeltSpmFaktiskTimer"] = gammeltSpmFaktiskTimer
     data["faktiskGradLikt"] = faktiskGradLikt
     data["faktiskTimerLikt"] = faktiskTimerLikt
-
+    data["innenforArbeidsgiverperioden"] = innenforArbeidsgiverperioden
     return data
 }
