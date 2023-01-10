@@ -14,11 +14,11 @@ data class ArbeidUnderveisRad(
     val sykepengesoknadId: String,
     val sendt: Instant,
     val gammeltSpmHovedSvar: String,
-    val gammeltSpmTimerPerUke: String?,
-    val gammeltSpmProsent: String?,
+    val gammeltSpmTimerPerUke: Double?,
+    val gammeltSpmProsent: Double?,
     val nyttSpmHovedSvar: String,
-    val nyttSpmTimerPerUke: String?,
-    val nyttSpmProsent: String?,
+    val nyttSpmTimerPerUke: Double?,
+    val nyttSpmProsent: Double?,
     val hovedsvarLikt: Boolean,
     val undersvarLikt: Boolean,
     val kafkaFaktiskGrad: Int?,
@@ -29,6 +29,7 @@ data class ArbeidUnderveisRad(
     val gammeltSpmFaktiskTimer: Double?,
     val faktiskGradLikt: Boolean,
     val faktiskTimerLikt: Boolean,
+    val innenforArbeidsgiverperioden: Boolean,
 )
 
 @Component
@@ -55,9 +56,12 @@ class ArbeidUnderveisGateDataprodukt(
 
         val gammeltSpmFlat = listOf(gammeltSpm).flatten()
 
-        val gammeltSpmTimerPerUke = gammeltSpmFlat.firstOrNull { it.tag == "HVOR_MANGE_TIMER_PER_UKE_0" }?.forsteSvar()
-        val gammeltSpmTimer = gammeltSpmFlat.firstOrNull { it.tag == "HVOR_MYE_TIMER_VERDI_0" }?.forsteSvar()
-        val gammeltSpmProsent = gammeltSpmFlat.firstOrNull { it.tag == "HVOR_MYE_PROSENT_VERDI_0" }?.forsteSvar()
+        val gammeltSpmTimerPerUke =
+            gammeltSpmFlat.firstOrNull { it.tag == "HVOR_MANGE_TIMER_PER_UKE_0" }?.forsteSvar().tilDouble()
+        val gammeltSpmTimer =
+            gammeltSpmFlat.firstOrNull { it.tag == "HVOR_MYE_TIMER_VERDI_0" }?.forsteSvar().tilDouble()
+        val gammeltSpmProsent =
+            gammeltSpmFlat.firstOrNull { it.tag == "HVOR_MYE_PROSENT_VERDI_0" }?.forsteSvar().tilDouble()
 
         val nyttSpmFlat = listOf(nyttSpm).flatten()
 
@@ -70,9 +74,9 @@ class ArbeidUnderveisGateDataprodukt(
             return gammeltSpmFlat.firstOrNull { it.tag == "HVOR_MANGE_TIMER_PER_UKE_0" }?.forsteSvar()
         }
 
-        val nyttSpmTimerPerUke = finnNyttSpmTimerPerUke()
-        val nyttSpmTimer = nyttSpmFlat.firstOrNull { it.tag == "HVOR_MYE_TIMER_VERDI_0" }?.forsteSvar()
-        val nyttSpmProsent = nyttSpmFlat.firstOrNull { it.tag == "HVOR_MYE_PROSENT_VERDI_0" }?.forsteSvar()
+        val nyttSpmTimerPerUke = finnNyttSpmTimerPerUke().tilDouble()
+        val nyttSpmTimer = nyttSpmFlat.firstOrNull { it.tag == "HVOR_MYE_TIMER_VERDI_0" }?.forsteSvar().tilDouble()
+        val nyttSpmProsent = nyttSpmFlat.firstOrNull { it.tag == "HVOR_MYE_PROSENT_VERDI_0" }?.forsteSvar().tilDouble()
 
         val kafkaFaktiskGrad = soknad.soknadsperioder!!.first().faktiskGrad
         val kafkaFaktiskTimer = soknad.soknadsperioder!!.first().faktiskTimer
@@ -92,10 +96,8 @@ class ArbeidUnderveisGateDataprodukt(
             )
         }
 
-        val nyttSpmFaktiskTimer = nyttSpmTimer.tilDouble()
-        val gammeltSpmFaktiskTimer = gammeltSpmTimer.tilDouble()
-        val nyttSpmFaktiskGrad = faktiskGrad(nyttSpmFaktiskTimer, nyttSpmTimerPerUke?.toDouble())
-        val gammeltSpmFaktiskGrad = faktiskGrad(gammeltSpmFaktiskTimer, gammeltSpmTimerPerUke?.toDouble())
+        val nyttSpmFaktiskGrad = faktiskGrad(nyttSpmTimer, nyttSpmTimerPerUke)
+        val gammeltSpmFaktiskGrad = faktiskGrad(gammeltSpmTimer, gammeltSpmTimerPerUke)
         val rad = ArbeidUnderveisRad(
             sykepengesoknadId = soknad.id,
             sendt = soknad.sendt(),
@@ -112,15 +114,19 @@ class ArbeidUnderveisGateDataprodukt(
             kafkaFaktiskGrad = kafkaFaktiskGrad,
             kafkaFaktiskTimer = kafkaFaktiskTimer,
             nyttSpmFaktiskGrad = nyttSpmFaktiskGrad,
-            nyttSpmFaktiskTimer = nyttSpmFaktiskTimer,
+            nyttSpmFaktiskTimer = nyttSpmTimer,
             gammeltSpmFaktiskGrad = gammeltSpmFaktiskGrad,
-            gammeltSpmFaktiskTimer = gammeltSpmFaktiskTimer,
+            gammeltSpmFaktiskTimer = gammeltSpmTimer,
             faktiskGradLikt = gammeltSpmFaktiskGrad == kafkaFaktiskGrad && nyttSpmFaktiskGrad == kafkaFaktiskGrad,
-            faktiskTimerLikt = gammeltSpmFaktiskTimer == kafkaFaktiskTimer && nyttSpmFaktiskTimer == kafkaFaktiskTimer,
-
+            faktiskTimerLikt = gammeltSpmTimer == kafkaFaktiskTimer && nyttSpmTimer == kafkaFaktiskTimer,
+            innenforArbeidsgiverperioden = soknad.erInnforArbeidsgiverperiode(),
         )
         arbeidUnderveisGateTable.lagreRad(listOf(rad))
     }
+}
+
+private fun SykepengesoknadDTO.erInnforArbeidsgiverperiode(): Boolean {
+    return this.sendtArbeidsgiver != null && this.sendtNav == null
 }
 
 private fun String?.tilDouble(): Double? {

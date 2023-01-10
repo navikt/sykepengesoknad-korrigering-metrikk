@@ -54,11 +54,11 @@ class TableCreator(
                 Field.newBuilder("sykepengesoknadId", StandardSQLTypeName.STRING).build(),
                 Field.newBuilder("sendt", StandardSQLTypeName.TIMESTAMP).build(),
                 Field.newBuilder("gammeltSpmHovedSvar", StandardSQLTypeName.STRING).build(),
-                Field.newBuilder("gammeltSpmTimerPerUke", StandardSQLTypeName.STRING).build(),
-                Field.newBuilder("gammeltSpmProsent", StandardSQLTypeName.STRING).build(),
+                Field.newBuilder("gammeltSpmTimerPerUke", StandardSQLTypeName.NUMERIC).build(),
+                Field.newBuilder("gammeltSpmProsent", StandardSQLTypeName.NUMERIC).build(),
                 Field.newBuilder("nyttSpmHovedSvar", StandardSQLTypeName.STRING).build(),
-                Field.newBuilder("nyttSpmTimerPerUke", StandardSQLTypeName.STRING).build(),
-                Field.newBuilder("nyttSpmProsent", StandardSQLTypeName.STRING).build(),
+                Field.newBuilder("nyttSpmTimerPerUke", StandardSQLTypeName.NUMERIC).build(),
+                Field.newBuilder("nyttSpmProsent", StandardSQLTypeName.NUMERIC).build(),
                 Field.newBuilder("hovedsvarLikt", StandardSQLTypeName.BOOL).build(),
                 Field.newBuilder("undersvarLikt", StandardSQLTypeName.BOOL).build(),
                 Field.newBuilder("kafkaFaktiskGrad", StandardSQLTypeName.INT64).build(),
@@ -69,6 +69,7 @@ class TableCreator(
                 Field.newBuilder("gammeltSpmFaktiskTimer", StandardSQLTypeName.NUMERIC).build(),
                 Field.newBuilder("faktiskGradLikt", StandardSQLTypeName.BOOL).build(),
                 Field.newBuilder("faktiskTimerLikt", StandardSQLTypeName.BOOL).build(),
+                Field.newBuilder("innenforArbeidsgiverperioden", StandardSQLTypeName.BOOL).build(),
             )
         )
 
@@ -142,4 +143,4 @@ class TableCreator(
 
 const val korrigerteSporsmalTableName = "korrigerte_sporsmal"
 const val andreInntektskilderTableName = "andre_inntektskilder"
-const val arbeidUnderveisGateTableName = "arbeid_underveis_gate"
+const val arbeidUnderveisGateTableName = "arbeid_underveis_gate_v2"
