@@ -49,6 +49,30 @@ class TableCreator(
         )
 
         createTable(
+            tableName = arbeidUnderveisGateTableName,
+            schema = Schema.of(
+                Field.newBuilder("sykepengesoknadId", StandardSQLTypeName.STRING).build(),
+                Field.newBuilder("sendt", StandardSQLTypeName.TIMESTAMP).build(),
+                Field.newBuilder("gammeltSpmHovedSvar", StandardSQLTypeName.STRING).build(),
+                Field.newBuilder("gammeltSpmTimerPerUke", StandardSQLTypeName.STRING).build(),
+                Field.newBuilder("gammeltSpmProsent", StandardSQLTypeName.STRING).build(),
+                Field.newBuilder("nyttSpmHovedSvar", StandardSQLTypeName.STRING).build(),
+                Field.newBuilder("nyttSpmTimerPerUke", StandardSQLTypeName.STRING).build(),
+                Field.newBuilder("nyttSpmProsent", StandardSQLTypeName.STRING).build(),
+                Field.newBuilder("hovedsvarLikt", StandardSQLTypeName.BOOL).build(),
+                Field.newBuilder("undersvarLikt", StandardSQLTypeName.BOOL).build(),
+                Field.newBuilder("kafkaFaktiskGrad", StandardSQLTypeName.INT64).build(),
+                Field.newBuilder("kafkaFaktiskTimer", StandardSQLTypeName.NUMERIC).build(),
+                Field.newBuilder("nyttSpmFaktiskGrad", StandardSQLTypeName.INT64).build(),
+                Field.newBuilder("nyttSpmFaktiskTimer", StandardSQLTypeName.NUMERIC).build(),
+                Field.newBuilder("gammeltSpmFaktiskGrad", StandardSQLTypeName.INT64).build(),
+                Field.newBuilder("gammeltSpmFaktiskTimer", StandardSQLTypeName.NUMERIC).build(),
+                Field.newBuilder("faktiskGradLikt", StandardSQLTypeName.BOOL).build(),
+                Field.newBuilder("faktiskTimerLikt", StandardSQLTypeName.BOOL).build(),
+            )
+        )
+
+        createTable(
             tableName = andreInntektskilderTableName,
             schema = Schema.of(
                 Field.newBuilder("sykepengesoknadId", StandardSQLTypeName.STRING)
@@ -118,3 +142,4 @@ class TableCreator(
 
 const val korrigerteSporsmalTableName = "korrigerte_sporsmal"
 const val andreInntektskilderTableName = "andre_inntektskilder"
+const val arbeidUnderveisGateTableName = "arbeid_underveis_gate"
