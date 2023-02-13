@@ -1,13 +1,13 @@
 package no.nav.helse.flex
 
 import org.junit.jupiter.api.TestInstance
-import org.springframework.boot.test.autoconfigure.actuate.metrics.AutoConfigureMetrics
+import org.springframework.boot.test.autoconfigure.actuate.observability.AutoConfigureObservability
 import org.springframework.boot.test.context.SpringBootTest
 import org.testcontainers.containers.KafkaContainer
 import org.testcontainers.utility.DockerImageName
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@AutoConfigureMetrics
+@AutoConfigureObservability
 @SpringBootTest(classes = [Application::class])
 abstract class FellesTestOppsett {
 
