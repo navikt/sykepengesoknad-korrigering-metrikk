@@ -181,7 +181,7 @@ class FinnKorrigerteSporsmalKtTest {
                     ),
                     SporsmalDTO(
                         tag = "JOBBUNDERVEIS",
-                        svar = listOf(SvarDTO(verdi = "JA")),
+                        svar = listOf(SvarDTO(verdi = "JA"))
                     )
                 )
             )
@@ -195,7 +195,7 @@ class FinnKorrigerteSporsmalKtTest {
                     ),
                     SporsmalDTO(
                         tag = "JOBBUNDERVEIS",
-                        svar = listOf(SvarDTO(verdi = "NEI")),
+                        svar = listOf(SvarDTO(verdi = "NEI"))
                     )
                 )
             )
@@ -213,7 +213,7 @@ class FinnKorrigerteSporsmalKtTest {
     }
     fun soknad(
         id: String = UUID.randomUUID().toString(),
-        sporsmal: List<SporsmalDTO> = emptyList(),
+        sporsmal: List<SporsmalDTO> = emptyList()
     ): SykepengesoknadDTO {
         return SykepengesoknadDTO(
             id = id,
@@ -223,7 +223,7 @@ class FinnKorrigerteSporsmalKtTest {
             status = SoknadsstatusDTO.SENDT,
             type = SoknadstypeDTO.ARBEIDSTAKERE,
             sporsmal = sporsmal,
-            sendtArbeidsgiver = LocalDateTime.now(),
+            sendtArbeidsgiver = LocalDateTime.now()
         )
     }
 }

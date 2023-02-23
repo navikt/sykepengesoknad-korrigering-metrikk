@@ -44,7 +44,7 @@ class TableCreator(
                 Field.newBuilder("fom", StandardSQLTypeName.DATE).setDescription("Søknadens fra og med dato").build(),
                 Field.newBuilder("tom", StandardSQLTypeName.DATE).setDescription("Søknadens til og med dato").build(),
                 Field.newBuilder("hovedsvar", StandardSQLTypeName.STRING)
-                    .setDescription("Det siste gjeldende hovedsvaret på spørsmålet. Kun av typen Ja/NEI").build(),
+                    .setDescription("Det siste gjeldende hovedsvaret på spørsmålet. Kun av typen Ja/NEI").build()
             )
         )
 
@@ -88,13 +88,12 @@ class TableCreator(
                     .setDescription("Er du sykmeldt med omsorgslønn fra kommunen?").build(),
 
                 Field.newBuilder("annet", StandardSQLTypeName.BOOL)
-                    .setDescription("Huket av for annet").build(),
+                    .setDescription("Huket av for annet").build()
             )
         )
     }
 
     fun createTable(tableName: String, schema: Schema) {
-
         val table = bigQuery.getTable(TableId.of(dataset, tableName))
         if (table != null && table.exists()) {
             log.info("Table $tableName eksisterer allerede")

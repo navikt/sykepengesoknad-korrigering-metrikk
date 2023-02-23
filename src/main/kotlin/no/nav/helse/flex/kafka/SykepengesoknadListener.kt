@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component
 class SykepengesoknadListener(
     private val jobbetUnderveisTimerProsent: JobbetUnderveisTimerProsent,
     private val studierEtterBegyntSykefravaer: StudierEtterBegyntSykefravaer,
-    private val soknadSendtForTom: SoknadSendtForTom,
+    private val soknadSendtForTom: SoknadSendtForTom
 ) {
 
     private val log = logger()
@@ -24,10 +24,9 @@ class SykepengesoknadListener(
     @KafkaListener(
         topics = [FLEX_SYKEPENGESOKNAD_TOPIC],
         id = "prometheus-metrikker-listener",
-        idIsGroup = false,
+        idIsGroup = false
     )
     fun listen(cr: ConsumerRecord<String, String>, acknowledgment: Acknowledgment) {
-
         val soknad = cr.value().tilSykepengesoknadDTO()
 
         log.debug("Mottok soknad ${soknad.id} med status ${soknad.status}")

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class KorrigerteSoknaderDataproduktListener(
-    private val korrigerteSoknaderDataprodukt: KorrigerteSoknaderDataprodukt,
+    private val korrigerteSoknaderDataprodukt: KorrigerteSoknaderDataprodukt
 ) {
 
     private val log = logger()
@@ -19,10 +19,9 @@ class KorrigerteSoknaderDataproduktListener(
         topics = [FLEX_SYKEPENGESOKNAD_TOPIC],
         id = "korrigerte-soknader-dataprodukt-listener",
         groupId = "korrigerte-soknader-dataprodukt-listener-4",
-        properties = ["auto.offset.reset = earliest"],
+        properties = ["auto.offset.reset = earliest"]
     )
     fun listen(cr: ConsumerRecord<String, String>, acknowledgment: Acknowledgment) {
-
         val soknad = cr.value().tilSykepengesoknadDTO()
 
         log.debug("Mottok soknad ${soknad.id} med status ${soknad.status}")

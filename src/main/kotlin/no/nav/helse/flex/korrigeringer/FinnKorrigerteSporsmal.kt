@@ -33,8 +33,9 @@ fun finnKorrigerteSporsmal(
                             opprinneligSendt = søknadSomBleKorrigert.sendt(),
                             endring = if (it.svar != nyttSpm.svar) {
                                 Endring.HOVEDSPORSMAL
-                            } else
-                                Endring.UNDERSPORSMAL,
+                            } else {
+                                Endring.UNDERSPORSMAL
+                            },
                             tag = nyttSpm.tag,
                             fom = soknadMedKorrigering.fom,
                             tom = soknadMedKorrigering.tom,
@@ -63,8 +64,11 @@ fun SporsmalDTO.tilSpørsmål(): Spørsmål {
             .filter { it.verdi != null }
             .map { it.verdi!! }
             .sorted(),
-        undersporsmal = if (taMedUnderspm())
-            this.undersporsmal?.map { it.tilSpørsmål() } ?: emptyList() else emptyList()
+        undersporsmal = if (taMedUnderspm()) {
+            this.undersporsmal?.map { it.tilSpørsmål() } ?: emptyList()
+        } else {
+            emptyList()
+        }
     )
 }
 

@@ -14,7 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder
 
 @Component
 class SykepengesoknadBackendClient(
-    private val sykepengesoknadBackendRestTemplate: RestTemplate,
+    private val sykepengesoknadBackendRestTemplate: RestTemplate
 ) {
 
     val log = logger()

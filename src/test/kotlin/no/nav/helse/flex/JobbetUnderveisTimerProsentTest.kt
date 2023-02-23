@@ -72,9 +72,8 @@ fun jobbetDuUndersporsmal(
     minProsent: Int = 0,
     index: Int = 0,
     velgTimer: Boolean,
-    velgProsent: Boolean,
+    velgProsent: Boolean
 ): List<SporsmalDTO> {
-
     return listOf(
         SporsmalDTO(
             tag = "HVOR_MANGE_TIMER_PER_UKE_" + index,
@@ -129,7 +128,7 @@ fun jobbetDuUndersporsmal(
                             max = "99"
                         )
                     )
-                ),
+                )
             )
         )
     )

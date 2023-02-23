@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component
 @Component
 class KorrigerteSoknaderDataprodukt(
     val sykepengesoknadBackendClient: SykepengesoknadBackendClient,
-    val korrigertSporsmalTable: KorrigertSporsmalTable,
+    val korrigertSporsmalTable: KorrigertSporsmalTable
 ) {
 
     val log = logger()

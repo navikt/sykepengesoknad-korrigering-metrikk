@@ -28,7 +28,7 @@ class AadRestTemplateConfiguration {
             registrationName = "sykepengesoknad-backend-client-credentials",
             restTemplateBuilder = restTemplateBuilder,
             clientConfigurationProperties = clientConfigurationProperties,
-            oAuth2AccessTokenService = oAuth2AccessTokenService,
+            oAuth2AccessTokenService = oAuth2AccessTokenService
         )
 
     private fun downstreamRestTemplate(
