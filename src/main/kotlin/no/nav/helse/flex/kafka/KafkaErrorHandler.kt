@@ -13,7 +13,8 @@ import java.lang.Exception
 class KafkaErrorHandler : DefaultErrorHandler(
     null,
     ExponentialBackOff(1000L, 1.5).also {
-        it.maxInterval = 60_000L * 10
+        // 4 minutter, som er mindre enn default max.poll.interval.ms på 5 minutter.
+        it.maxInterval = 60_000L * 4
     }
 ) {
     val log = logger()

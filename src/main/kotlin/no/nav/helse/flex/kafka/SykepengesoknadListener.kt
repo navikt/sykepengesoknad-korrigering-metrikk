@@ -29,7 +29,7 @@ class SykepengesoknadListener(
     fun listen(cr: ConsumerRecord<String, String>, acknowledgment: Acknowledgment) {
         val soknad = cr.value().tilSykepengesoknadDTO()
 
-        log.debug("Mottok soknad ${soknad.id} med status ${soknad.status}")
+        log.debug("Mottok soknad {} med status {}", soknad.id, soknad.status)
 
         jobbetUnderveisTimerProsent.finnForetrukketSvarJobbetUnderveis(soknad)
         studierEtterBegyntSykefravaer.finnBegyntStudierFoerSyk(soknad)
