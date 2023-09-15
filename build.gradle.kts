@@ -15,9 +15,6 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 
 ext["okhttp3.version"] = "4.9.3" // Token-support tester trenger Mockwebserver.
 
-val githubUser: String by project
-val githubPassword: String by project
-
 repositories {
     mavenCentral()
     maven {
@@ -25,11 +22,7 @@ repositories {
     }
 
     maven {
-        url = uri("https://maven.pkg.github.com/navikt/sykepengesoknad-kafka")
-        credentials {
-            username = githubUser
-            password = githubPassword
-        }
+        url = uri("https://github-package-registry-mirror.gc.nav.no/cached/maven-release")
     }
 }
 
