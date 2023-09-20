@@ -13,7 +13,7 @@ abstract class FellesTestOppsett {
 
     companion object {
         init {
-            KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:6.1.1")).also {
+            KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.4.1")).also {
                 it.start()
                 System.setProperty("KAFKA_BROKERS", it.bootstrapServers)
             }
