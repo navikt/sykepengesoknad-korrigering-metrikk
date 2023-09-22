@@ -31,7 +31,7 @@ val tokenSupportVersion = "3.1.5"
 val logstashLogbackEncoderVersion = "7.4"
 val kluentVersion = "1.73"
 val bigQueryVersion = "2.32.0"
-val sykepengesoknadKafkaVersion = "2022.12.21-07.53-20bd43a2"
+val sykepengesoknadKafkaVersion = "2023.09.18-14.15-7ea2dc46"
 
 dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
