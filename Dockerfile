@@ -1,4 +1,4 @@
-FROM gcr.io/distroless/java17-debian12@sha256:5626fefd568faa244e0597439a2c87b86ce0cb40eada2948e6f131a3bab59f37
+FROM gcr.io/distroless/java17-debian12@sha256:82ec33483644e853dad0f5e6956c675be47ba6de00a8f74dadee321b6b0febb5
 
 ENV JDK_JAVA_OPTIONS="-XX:MaxRAMPercentage=75.0 -XX:+UseParallelGC -XX:ActiveProcessorCount=2"
 
