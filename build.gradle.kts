@@ -30,7 +30,7 @@ val testContainersVersion = "1.19.1"
 val tokenSupportVersion = "3.1.7"
 val logstashLogbackEncoderVersion = "7.4"
 val kluentVersion = "1.73"
-val bigQueryVersion = "2.33.2"
+val bigQueryVersion = "2.34.0"
 val sykepengesoknadKafkaVersion = "2023.10.23-13.04-fb83dfcb"
 
 dependencies {
