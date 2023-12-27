@@ -1,6 +1,6 @@
 package no.nav.helse.flex.kafka
 
-import no.nav.helse.flex.logger
+import no.nav.helse.flex.logger as slf4jLogger
 import org.apache.kafka.clients.consumer.Consumer
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.clients.consumer.ConsumerRecords
@@ -17,7 +17,8 @@ class KafkaErrorHandler : DefaultErrorHandler(
         it.maxInterval = 60_000L * 4
     }
 ) {
-    val log = logger()
+    // Bruker aliased logger for unngå kollisjon med CommonErrorHandler.logger(): LogAccessor.
+    val log = slf4jLogger()
 
     override fun handleRemaining(
         thrownException: java.lang.Exception,
